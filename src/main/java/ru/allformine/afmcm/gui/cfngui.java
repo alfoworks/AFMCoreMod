@@ -29,6 +29,9 @@ public class cfngui
     int height = scaled.getScaledHeight();
     
     String s = "[" + this.text + EnumChatFormatting.WHITE + "]";
-    this.mc.fontRenderer.drawStringWithShadow(s, 5, height - this.mc.fontRenderer.FONT_HEIGHT - 5, 16777215);
+    this.mc.fontRenderer.drawStringWithShadow(s,
+            200 - this.mc.fontRenderer.getStringWidth(s),
+            height - this.mc.fontRenderer.FONT_HEIGHT,
+            16777215);
   }
 }

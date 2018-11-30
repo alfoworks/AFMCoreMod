@@ -48,8 +48,7 @@ public class main
   @SubscribeEvent(priority=EventPriority.NORMAL)
   public void onRenderGui(RenderGameOverlayEvent.Pre event)
   {
-    if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && 
-      (vars.renderCfnGui)) {
+    if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && vars.cfn.length() > 0) {
       new cfngui(vars.cfn, Minecraft.getMinecraft());
     }
   }
@@ -59,13 +58,11 @@ public class main
   {
     MinecraftForge.EVENT_BUS.register(new main());
     FMLCommonHandler.instance().bus().register(new main());
-    
-    System.out.println("Config is loading!");
+
     Configuration config = new Configuration(new File("config", "AFMCoreMod.cfg"));
     config.load();
     
     vars.ServerName = config.getString("serverName", "main", vars.ServerName, "Secret stuff");
-    vars.renderCfnGui = config.getBoolean("renderCfnGui", "overlays", vars.renderCfnGui, "--test--");
     
     config.save();
   }
