@@ -30,7 +30,7 @@ public class cfngui
     
     String s = "[" + this.text + EnumChatFormatting.WHITE + "]";
     this.mc.fontRenderer.drawStringWithShadow(s,
-            0,
+            10,
             height - this.mc.fontRenderer.FONT_HEIGHT - 5,
             16777215);
   }
