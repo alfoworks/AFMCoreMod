@@ -38,6 +38,7 @@ public class main {
         cfnproxy handler = new cfnproxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("FactionsShow")).register(handler);
         MinecraftForge.EVENT_BUS.register(handler);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SideOnly(Side.CLIENT)
@@ -72,8 +73,10 @@ public class main {
         rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
     }
 
-    @Mod.EventHandler
+    @SubscribeEvent
     public void onLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        System.out.println("Changing Discord RPC status (PlayerLoggedIn)");
+
         if(MinecraftServer.getServer().isDedicatedServer()) {
             rpci.updateState("На сервере", System.currentTimeMillis() / 1000L);
         } else {
@@ -81,8 +84,10 @@ public class main {
         }
     }
 
-    @Mod.EventHandler
+    @SubscribeEvent
     public void onLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        System.out.println("Changing Discord RPC status (PlayerLoggedOut)");
+
         rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
     }
 }
