@@ -1,18 +1,32 @@
 package ru.allformine.afmcm.rpc;
 
-import ru.allformine.afmcm.*;
-import net.arikia.dev.drpc.*;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
+import ru.allformine.afmcm.vars;
 
 public class rpci
 {
-    public static void start() {
-        initDiscord();
-        DiscordRPC.discordRunCallbacks();
-        DiscordRPC.discordUpdatePresence(new DiscordRichPresence.Builder("\u0420\u045c\u0420\u0451\u0420\u0454: " + vars.Nick).setBigImage("icon", "AFMCoreMod").setStartTimestamps(vars.initTime).setDetails("\u0420\u040e\u0420µ\u0421\u0402\u0420\u0406\u0420µ\u0421\u0402 " + vars.ServerName).build());
+    public static void updateState(String state, long time) {
+        DiscordRPC.discordUpdatePresence(new DiscordRichPresence
+                .Builder(vars.nickname)
+                .setBigImage(vars.bigImageKey, vars.serverName)
+                .setSmallImage("icon", "AFMCoreMod")
+                .setStartTimestamps(time)
+                .setDetails(state)
+                .build());
     }
 
-    private static void initDiscord() {
-        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(new DiscordRichPresence.Builder("\u0420\u045c\u0420\u0451\u0420\u0454: " + vars.Nick).setBigImage("icon", "AFMCoreMod").setStartTimestamps(vars.initTime).setDetails("\u0420\u040e\u0420µ\u0421\u0402\u0420\u0406\u0420µ\u0421\u0402: " + vars.ServerName).build())).build();
-        DiscordRPC.discordInitialize("515590062667464715", handlers, true);
+    public static void initDiscord(long time) {
+        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
+                .setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(new DiscordRichPresence
+                        .Builder(vars.nickname)
+                        .setBigImage(vars.bigImageKey, vars.serverName)
+                        .setSmallImage("icon", "AFMCoreMod")
+                        .setStartTimestamps(time)
+                        .setDetails("В меню")
+                        .build()))
+                .build();
+        DiscordRPC.discordInitialize(vars.rpcAppId, handlers, true);
     }
 }
