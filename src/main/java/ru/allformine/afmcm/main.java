@@ -29,7 +29,7 @@ import ru.allformine.afmcm.rpc.rpci;
 
 @Mod(modid = "afmcm")
 public class main {
-    public static FMLEventChannel channel;
+    private static FMLEventChannel channel;
     @SidedProxy(clientSide = "ru.allformine.afmcm.proxy.ClientProxy", serverSide = "ru.allformine.afmcm.proxy.CommonProxy")
     public static CommonProxy proxy;
 
@@ -56,8 +56,8 @@ public class main {
         Configuration config = new Configuration(new File("config", "AFMCoreMod.cfg"));
         config.load();
 
-        vars.rpcAppId = config.getString("rpcAppId", "discord", vars.serverName, "Secret stuff");
-        vars.serverName = config.getString("serverName", "discord", vars.rpcAppId, "Secret stuff");
+        vars.rpcAppId = config.getString("rpcAppId", "discord", vars.rpcAppId, "Secret stuff");
+        vars.serverName = config.getString("serverName", "discord", vars.serverName, "Secret stuff");
         vars.bigImageKey = config.getString("bigImageKey", "discord", vars.bigImageKey, "Secret stuff");
 
         config.save();
