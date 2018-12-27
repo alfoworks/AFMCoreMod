@@ -69,6 +69,7 @@ public class main {
 
         System.out.println("[AFMCM] Statring DiscordRPC..");
         rpci.initDiscord(System.currentTimeMillis() / 1000L);
+        rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
     }
 
     @Mod.EventHandler
@@ -78,5 +79,10 @@ public class main {
         } else {
             rpci.updateState("В одиночной игре", System.currentTimeMillis() / 1000L);
         }
+    }
+
+    @Mod.EventHandler
+    public void onLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
     }
 }

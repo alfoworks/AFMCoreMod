@@ -18,13 +18,14 @@ public class rpci
     }
 
     public static void initDiscord(long time) {
+        DiscordRPC.discordRunCallbacks();
         final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
                 .setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(new DiscordRichPresence
                         .Builder(vars.nickname)
                         .setBigImage(vars.bigImageKey, vars.serverName)
                         .setSmallImage("icon", "AFMCoreMod")
                         .setStartTimestamps(time)
-                        .setDetails("В меню")
+                        .setDetails("Неизвестно")
                         .build()))
                 .build();
         DiscordRPC.discordInitialize(vars.rpcAppId, handlers, true);
