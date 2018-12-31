@@ -1,8 +1,7 @@
-package ru.allformine.afmcm;
+﻿package ru.allformine.afmcm;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -11,6 +10,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,72 +22,72 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import ru.allformine.afmcm.gui.cfngui;
+import ru.allformine.afmcm.gui.NotifyGui;
 import ru.allformine.afmcm.proxy.CommonProxy;
-import ru.allformine.afmcm.proxy.cfnproxy;
+import ru.allformine.afmcm.proxy.NotifierProxy;
 import ru.allformine.afmcm.rpc.rpci;
 
 @Mod(modid = "afmcm")
-public class main {
+public class AFMCoreMod {
     private static FMLEventChannel channel;
     @SidedProxy(clientSide = "ru.allformine.afmcm.proxy.ClientProxy", serverSide = "ru.allformine.afmcm.proxy.CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        cfnproxy handler = new cfnproxy();
+        NotifierProxy handler = new NotifierProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("FactionsShow")).register(handler);
         MinecraftForge.EVENT_BUS.register(handler);
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onRenderGui(RenderGameOverlayEvent.Pre event) {
-        if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && vars.cfn.length() > 0) {
-            new cfngui(vars.cfn, Minecraft.getMinecraft());
+        if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && References.notifyText.length() > 0) {
+            new NotifyGui(References.notifyText, Minecraft.getMinecraft());
         }
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new main());
-        FMLCommonHandler.instance().bus().register(new main());
+        MinecraftForge.EVENT_BUS.register(new AFMCoreMod());
+        FMLCommonHandler.instance().bus().register(new AFMCoreMod());
 
         Configuration config = new Configuration(new File("config", "AFMCoreMod.cfg"));
         config.load();
 
-        vars.rpcAppId = config.getString("rpcAppId", "discord", vars.rpcAppId, "Secret stuff");
-        vars.serverName = config.getString("serverName", "discord", vars.serverName, "Secret stuff");
-        vars.bigImageKey = config.getString("bigImageKey", "discord", vars.bigImageKey, "Secret stuff");
+        References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
+        References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
+        References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
 
         config.save();
     }
 
     @Mod.EventHandler
     public void init(FMLPostInitializationEvent event) {
-        vars.nickname = Minecraft.getMinecraft().getSession().getUsername();
+        References.nickname = Minecraft.getMinecraft().getSession().getUsername();
 
         System.out.println("[AFMCM] Statring DiscordRPC..");
         rpci.initDiscord(System.currentTimeMillis() / 1000L);
-        rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
+        rpci.updateState("\u0412 \u043c\u0435\u043d\u044e", System.currentTimeMillis() / 1000L);
     }
 
-    @SubscribeEvent
-    public void onLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        System.out.println("Changing Discord RPC status (PlayerLoggedIn)");
 
-        if(MinecraftServer.getServer().isDedicatedServer()) {
-            rpci.updateState("На сервере", System.currentTimeMillis() / 1000L);
+    @SubscribeEvent
+    public void onLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        System.out.println("Changing Discord RPC status (ClientConnectedToServerEvent)");
+
+        if (MinecraftServer.getServer().isDedicatedServer()) {
+            rpci.updateState("\u041d\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0435", System.currentTimeMillis() / 1000L);
         } else {
-            rpci.updateState("В одиночной игре", System.currentTimeMillis() / 1000L);
+            rpci.updateState("\u0412 \u043e\u0434\u0438\u043d\u043e\u0447\u043d\u043e\u0439 \u0438\u0433\u0440\u0435", System.currentTimeMillis() / 1000L);
         }
     }
 
     @SubscribeEvent
-    public void onLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        System.out.println("Changing Discord RPC status (PlayerLoggedOut)");
+    public void onLoggedOut(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        System.out.println("Changing Discord RPC status (ClientDisconnectionFromServerEvent)");
 
-        rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
+        rpci.updateState("\u0412 \u043c\u0435\u043d\u044e", System.currentTimeMillis() / 1000L);
     }
 }

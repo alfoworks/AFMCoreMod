@@ -1,7 +1,7 @@
 package ru.allformine.afmcm;
 
-public class vars {
-    public static String cfn = "";
+public class References {
+    public static String notifyText = "";
 
     public static String rpcAppId = "";
     public static String bigImageKey = "";

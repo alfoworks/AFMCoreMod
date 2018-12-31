@@ -18,7 +18,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.4"
+version = "1.5"
 group= "ru.allformine.afmcm" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "afmcm"
 

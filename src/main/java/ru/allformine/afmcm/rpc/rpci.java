@@ -1,16 +1,16 @@
-package ru.allformine.afmcm.rpc;
+﻿package ru.allformine.afmcm.rpc;
 
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
-import ru.allformine.afmcm.vars;
+import ru.allformine.afmcm.References;
 
 public class rpci
 {
     public static void updateState(String state, long time) {
         DiscordRPC.discordUpdatePresence(new DiscordRichPresence
-                .Builder(vars.nickname)
-                .setBigImage(vars.bigImageKey, vars.serverName)
+                .Builder(References.nickname)
+                .setBigImage(References.bigImageKey, References.serverName)
                 .setSmallImage("icon", "AFMCoreMod")
                 .setStartTimestamps(time)
                 .setDetails(state)
@@ -21,13 +21,13 @@ public class rpci
         DiscordRPC.discordRunCallbacks();
         final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
                 .setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(new DiscordRichPresence
-                        .Builder(vars.nickname)
-                        .setBigImage(vars.bigImageKey, vars.serverName)
+                        .Builder(References.nickname)
+                        .setBigImage(References.bigImageKey, References.serverName)
                         .setSmallImage("icon", "AFMCoreMod")
                         .setStartTimestamps(time)
-                        .setDetails("Неизвестно")
+                        .setDetails("\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u043e")
                         .build()))
                 .build();
-        DiscordRPC.discordInitialize(vars.rpcAppId, handlers, true);
+        DiscordRPC.discordInitialize(References.rpcAppId, handlers, true);
     }
 }
