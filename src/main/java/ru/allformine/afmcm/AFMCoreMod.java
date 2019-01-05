@@ -69,7 +69,7 @@ public class AFMCoreMod {
 
         System.out.println("[AFMCM] Statring DiscordRPC..");
         rpci.initDiscord(System.currentTimeMillis() / 1000L);
-        rpci.updateState("\u0412 \u043c\u0435\u043d\u044e", System.currentTimeMillis() / 1000L);
+        rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
     }
 
 
@@ -77,17 +77,13 @@ public class AFMCoreMod {
     public void onLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         System.out.println("Changing Discord RPC status (ClientConnectedToServerEvent)");
 
-        if (MinecraftServer.getServer().isDedicatedServer()) {
-            rpci.updateState("\u041d\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0435", System.currentTimeMillis() / 1000L);
-        } else {
-            rpci.updateState("\u0412 \u043e\u0434\u0438\u043d\u043e\u0447\u043d\u043e\u0439 \u0438\u0433\u0440\u0435", System.currentTimeMillis() / 1000L);
-        }
+        rpci.updateState("На сервере", System.currentTimeMillis() / 1000L);
     }
 
     @SubscribeEvent
     public void onLoggedOut(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         System.out.println("Changing Discord RPC status (ClientDisconnectionFromServerEvent)");
 
-        rpci.updateState("\u0412 \u043c\u0435\u043d\u044e", System.currentTimeMillis() / 1000L);
+        rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
     }
 }

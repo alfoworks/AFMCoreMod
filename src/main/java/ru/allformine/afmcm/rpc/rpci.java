@@ -25,7 +25,7 @@ public class rpci
                         .setBigImage(References.bigImageKey, References.serverName)
                         .setSmallImage("icon", "AFMCoreMod")
                         .setStartTimestamps(time)
-                        .setDetails("\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u043e")
+                        .setDetails("хз")
                         .build()))
                 .build();
         DiscordRPC.discordInitialize(References.rpcAppId, handlers, true);
