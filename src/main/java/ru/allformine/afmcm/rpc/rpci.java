@@ -1,4 +1,4 @@
-﻿package ru.allformine.afmcm.rpc;
+package ru.allformine.afmcm.rpc;
 
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;

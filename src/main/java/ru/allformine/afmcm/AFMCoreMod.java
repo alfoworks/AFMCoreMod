@@ -1,4 +1,4 @@
-﻿package ru.allformine.afmcm;
+package ru.allformine.afmcm;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
