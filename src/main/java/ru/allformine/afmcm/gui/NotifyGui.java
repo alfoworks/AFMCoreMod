@@ -30,7 +30,7 @@ public class NotifyGui extends Gui {
         ScaledResolution scaledResolution = event.resolution;
         double x = (scaledResolution.getScaledWidth()*0.5 / 2) - mc.fontRenderer.getStringWidth(text);
 
-        mc.fontRenderer.drawString(text, x, 40, Utils.colorARGBtoInt(alpha, 255, 255, 255), false);
+        mc.fontRenderer.drawString(text, (int) x, 40, Utils.colorARGBtoInt(alpha, 255, 255, 255), false);
 
         GL11.glPopMatrix();
     }
