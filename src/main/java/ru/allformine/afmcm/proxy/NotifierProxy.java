@@ -18,6 +18,6 @@ public class NotifierProxy {
         ByteBufUtils.readUTF8String(buf);
         References.notifyText = ByteBufUtils.readUTF8String(buf);
 
-        mc.thePlayer.playSound("notify.start", mc.gameSettings.getSoundLevel(SoundCategory.MASTER), 1.0F);
+        mc.thePlayer.playSound("afmcm:nstart", mc.gameSettings.getSoundLevel(SoundCategory.MASTER), 1.0F);
     }
 }

@@ -28,7 +28,7 @@ public class NotifyGui extends Gui {
         final int alpha = 160 + (int) (85.0D * Math.sin(cycle * 2 * Math.PI));
 
         ScaledResolution scaledResolution = event.resolution;
-        int x = scaledResolution.getScaledWidth() % 2 - mc.fontRenderer.getStringWidth(text);
+        int x = 1;
 
         mc.fontRenderer.drawString(text, x, 5, Utils.colorARGBtoInt(alpha, 255, 255, 255), false);
 
