@@ -8,17 +8,13 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import java.io.File;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -44,7 +40,7 @@ public class AFMCoreMod {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onRenderGui(RenderGameOverlayEvent.Pre event) {
         if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && References.notifyText.length() > 0) {
-            new NotifyGui(References.notifyText, Minecraft.getMinecraft());
+            new NotifyGui(References.notifyText, Minecraft.getMinecraft(), event);
         }
     }
 

@@ -1,0 +1,11 @@
+{
+  "notify.start":{
+    "category":"master",
+    "sounds":[
+      {
+        "name":"notify_start",
+        "stream":false
+      }
+    ]
+  }
+}
