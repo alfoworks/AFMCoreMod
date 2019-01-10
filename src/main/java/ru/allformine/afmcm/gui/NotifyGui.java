@@ -23,14 +23,14 @@ public class NotifyGui extends Gui {
 
     private void drawScreen() {
         GL11.glPushMatrix();
-        GL11.glScalef(2.0F, 2.0F, 0.0F);
+        GL11.glScalef(1.2F, 1.2F, 0.0F);
 
         final int alpha = 160 + (int) (85.0D * Math.sin(cycle * 2 * Math.PI));
 
         ScaledResolution scaledResolution = event.resolution;
-        int x = 1;
+        int x = (scaledResolution.getScaledWidth() / 2) - mc.fontRenderer.getStringWidth(text);
 
-        mc.fontRenderer.drawString(text, x, 5, Utils.colorARGBtoInt(alpha, 255, 255, 255), false);
+        mc.fontRenderer.drawString(text, x, 40, Utils.colorARGBtoInt(alpha, 255, 255, 255), false);
 
         GL11.glPopMatrix();
     }
