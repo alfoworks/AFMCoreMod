@@ -3,35 +3,35 @@ package ru.allformine.afmcm.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import org.lwjgl.opengl.GL11;
 
 public class NotifyGui extends Gui {
-    final double cycle = ((System.nanoTime() / 1000) % 0x200000) / (double) 0x200000;
+    private final double cycle = ((System.nanoTime() / 1000) % 0x200000) / (double) 0x200000;
 
-    private String text;
+    private String[] text;
     private Minecraft mc;
     private RenderGameOverlayEvent event;
 
     public NotifyGui(String text, Minecraft mc, RenderGameOverlayEvent event) {
-        this.text = "[" + text + EnumChatFormatting.WHITE + "]";
+        this.text = text.split("(?<=\\G.{20})");
         this.mc = mc;
         this.event = event;
         drawScreen();
     }
 
     private void drawScreen() {
-        GL11.glPushMatrix();
-        GL11.glScalef(1.2F, 1.2F, 0.0F);
-
-        final int alpha = 160 + (int) (85.0D * Math.sin(cycle * 2 * Math.PI));
-
         ScaledResolution scaledResolution = event.resolution;
-        double x = (scaledResolution.getScaledWidth() % 2) - mc.fontRenderer.getStringWidth(text)*1.2;
+        final int titleAlpha = 160 + (int) (85.0D * Math.sin(cycle * 3 * Math.PI));
 
-        mc.fontRenderer.drawString(text, (int) x, 40, Utils.colorARGBtoInt(alpha, 255, 255, 255), false);
+        int titleX = (scaledResolution.getScaledWidth() / 2) - mc.fontRenderer.getStringWidth("Уведомление");
+        mc.fontRenderer.drawString("Уведомление", titleX, 40, Utils.colorARGBtoInt(titleAlpha, 255, 0, 0), false);
 
-        GL11.glPopMatrix();
+        //Очень костыльно, чо поделаешь (
+        int textX = (scaledResolution.getScaledWidth() / 2) - mc.fontRenderer.getStringWidth("AAAAAAAAAAAAAAAAAAAA");
+
+        for (int i = 0; i < text.length; i++) {
+            int textY = 10 + i * mc.fontRenderer.FONT_HEIGHT;
+            mc.fontRenderer.drawString(text[i], textX, textY, 0xFFFFFF);
+        }
     }
 }
