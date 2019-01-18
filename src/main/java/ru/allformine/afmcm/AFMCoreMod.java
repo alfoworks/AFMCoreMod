@@ -41,7 +41,7 @@ public class AFMCoreMod {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onRenderGui(RenderGameOverlayEvent.Pre event) {
-        if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && References.notifyText.length() > 0) {
+        if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && References.notifyText.length() > 0 && References.notifyDrawing) {
             new NotifyGui(References.notifyText, Minecraft.getMinecraft(), event);
         }
     }

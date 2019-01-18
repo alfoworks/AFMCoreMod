@@ -24,11 +24,11 @@ public class NotifyGui extends Gui {
         int width = scaledResolution.getScaledWidth();
         int titleAlpha = 160 + (int) (85.0D * Math.sin(cycle * 2 * Math.PI));
 
-        drawCenteredString(mc.fontRenderer, "Notification", width / 2, 31, Utils.colorARGBtoInt(titleAlpha, 255, 0, 0));
+        drawCenteredString(mc.fontRenderer, "Notification", width / 2, 41, Utils.colorARGBtoInt(titleAlpha, 255, 0, 0));
 
         for (int i = 0; i < text.length; i++) {
-            int textY = 40 + i * mc.fontRenderer.FONT_HEIGHT;
-            drawCenteredString(mc.fontRenderer, text[i], width / 2 - 100, textY, 0xFFFFFF);
+            int textY = 50 + i * mc.fontRenderer.FONT_HEIGHT;
+            drawCenteredString(mc.fontRenderer, text[i], width / 2, textY, 0xFFFFFF);
         }
     }
 }
