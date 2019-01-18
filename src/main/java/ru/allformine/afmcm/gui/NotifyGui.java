@@ -21,16 +21,16 @@ public class NotifyGui extends Gui {
 
     private void drawScreen() {
         ScaledResolution scaledResolution = event.resolution;
-        final int titleAlpha = 160 + (int) (85.0D * Math.sin(cycle * 3 * Math.PI));
+        final int titleAlpha = 160 + (int) (85.0D * Math.sin(cycle * 2 * Math.PI));
 
-        int titleX = (scaledResolution.getScaledWidth() / 2) - mc.fontRenderer.getStringWidth("Уведомление");
-        mc.fontRenderer.drawString("Уведомление", titleX, 40, Utils.colorARGBtoInt(titleAlpha, 255, 0, 0), false);
+        int titleX = scaledResolution.getScaledWidth() - mc.fontRenderer.getStringWidth("Notification") / 2;
+        mc.fontRenderer.drawString("Notification", titleX, 31, Utils.colorARGBtoInt(titleAlpha, 255, 0, 0), false);
 
         //Очень костыльно, чо поделаешь (
-        int textX = (scaledResolution.getScaledWidth() / 2) - mc.fontRenderer.getStringWidth("AAAAAAAAAAAAAAAAAAAA");
+        int textX = scaledResolution.getScaledWidth() - mc.fontRenderer.getStringWidth("AAAAAAAAAAAAAAAAAAAA") / 2;
 
         for (int i = 0; i < text.length; i++) {
-            int textY = 10 + i * mc.fontRenderer.FONT_HEIGHT;
+            int textY = 40 + i * mc.fontRenderer.FONT_HEIGHT;
             mc.fontRenderer.drawString(text[i], textX, textY, 0xFFFFFF);
         }
     }
