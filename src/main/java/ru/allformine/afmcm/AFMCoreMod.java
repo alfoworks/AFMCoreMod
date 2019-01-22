@@ -21,6 +21,7 @@ import net.minecraftforge.common.config.Configuration;
 import ru.allformine.afmcm.gui.NotifyGui;
 import ru.allformine.afmcm.proxy.CommonProxy;
 import ru.allformine.afmcm.proxy.NotifierProxy;
+import ru.allformine.afmcm.proxy.ScreenshotProxy;
 import ru.allformine.afmcm.rpc.rpci;
 
 import java.io.File;
@@ -33,9 +34,12 @@ public class AFMCoreMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        NotifierProxy handler = new NotifierProxy();
-        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("FactionsShow")).register(handler);
-        MinecraftForge.EVENT_BUS.register(handler);
+        NotifierProxy notifyHandler = new NotifierProxy();
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Notify")).register(notifyHandler);
+        MinecraftForge.EVENT_BUS.register(notifyHandler);
+        ScreenshotProxy screenshotHandler = new ScreenshotProxy();
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("scr")).register(screenshotHandler);
+        MinecraftForge.EVENT_BUS.register(screenshotHandler);
     }
 
     @SideOnly(Side.CLIENT)
