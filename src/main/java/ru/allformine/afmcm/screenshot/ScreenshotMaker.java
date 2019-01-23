@@ -12,14 +12,16 @@ import org.lwjgl.opengl.GL12;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.Base64;
 
 @SideOnly(Side.CLIENT)
-public class ScreenshotHelper {
+public class ScreenshotMaker {
     private static IntBuffer pixelBuffer;
     private static int[] pixelValues;
 
-    public static byte[] getScreenshot(int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_) {
+    public static String getScreenshot(int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_) {
         try {
             if (OpenGlHelper.isFramebufferEnabled()) {
                 p_148259_2_ = p_148259_4_.framebufferTextureWidth;
@@ -62,10 +64,14 @@ public class ScreenshotHelper {
                 bufferedimage.setRGB(0, 0, p_148259_2_, p_148259_3_, pixelValues, 0, p_148259_2_);
             }
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedimage, "png", baos);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            return baos.toByteArray();
+            try {
+                ImageIO.write(bufferedimage, "png", out);
+                return Base64.getEncoder().encodeToString(out.toByteArray());
+            } catch (IOException e) {
+                return "";
+            }
         } catch (Exception exception) {
             return null;
         }
