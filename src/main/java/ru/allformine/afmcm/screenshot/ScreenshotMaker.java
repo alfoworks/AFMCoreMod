@@ -14,14 +14,13 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.IntBuffer;
-import java.util.Base64;
 
 @SideOnly(Side.CLIENT)
 public class ScreenshotMaker {
     private static IntBuffer pixelBuffer;
     private static int[] pixelValues;
 
-    public static String getScreenshot(int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_) {
+    public static byte[] getScreenshotByteArray(int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_) {
         try {
             if (OpenGlHelper.isFramebufferEnabled()) {
                 p_148259_2_ = p_148259_4_.framebufferTextureWidth;
@@ -68,9 +67,9 @@ public class ScreenshotMaker {
 
             try {
                 ImageIO.write(bufferedimage, "png", out);
-                return Base64.getEncoder().encodeToString(out.toByteArray());
+                return out.toByteArray();
             } catch (IOException e) {
-                return "";
+                return new byte[]{};
             }
         } catch (Exception exception) {
             return null;
