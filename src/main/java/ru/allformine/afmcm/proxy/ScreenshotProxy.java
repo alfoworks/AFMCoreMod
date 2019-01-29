@@ -24,12 +24,20 @@ public class ScreenshotProxy {
             dividedImages[1] = Arrays.copyOfRange(image, image.length / 2, image.length);
 
             for (byte[] dividedImage : dividedImages) {
-                ByteBuf buf = Unpooled.buffer(0);
+                byte[][] dividedDividedImages = new byte[2][];
 
-                buf.writeBytes(dividedImage);
+                dividedDividedImages[0] = Arrays.copyOfRange(dividedImage, 0, dividedImage.length / 2);
+                dividedDividedImages[1] = Arrays.copyOfRange(dividedImage, dividedImage.length / 2, dividedImage.length);
 
-                C17PacketCustomPayload packet = new C17PacketCustomPayload("scr", buf);
-                mc.thePlayer.sendQueue.addToSendQueue(packet);
+                for (byte[] dividedDividedImage : dividedDividedImages) {
+                    ByteBuf buf = Unpooled.buffer(0);
+
+                    buf.writeBytes(dividedDividedImage);
+
+                    C17PacketCustomPayload packet = new C17PacketCustomPayload("scr", buf);
+                    System.out.println(packet.func_149558_e().length);
+                    mc.thePlayer.sendQueue.addToSendQueue(packet);
+                }
             }
         }
     }
