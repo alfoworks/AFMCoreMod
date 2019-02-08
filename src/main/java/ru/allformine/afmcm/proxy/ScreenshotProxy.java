@@ -16,12 +16,14 @@ public class ScreenshotProxy {
         byte[] image = ScreenshotMaker.getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer());
 
         if (image != null) {
-            byte[][] chunkedImage = Util.splitArray(image, 32000);
+            byte[][] chunkedImage = Util.splitArray(image, 1600);
 
             if (chunkedImage != null) {
                 for (byte[] chunk : chunkedImage) {
                     ByteBuf buf = Unpooled.buffer(0);
                     buf.writeBytes(chunk);
+
+                    System.out.println(chunk.length);
 
                     C17PacketCustomPayload packet = new C17PacketCustomPayload("scr", buf);
                     mc.thePlayer.sendQueue.addToSendQueue(packet);
