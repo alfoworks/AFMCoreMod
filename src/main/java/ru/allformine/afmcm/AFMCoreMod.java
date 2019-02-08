@@ -38,7 +38,7 @@ public class AFMCoreMod {
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("Notify")).register(notifyHandler);
         MinecraftForge.EVENT_BUS.register(notifyHandler);
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
-        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("scr")).register(screenshotHandler);
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("C234Fb")).register(screenshotHandler);
         MinecraftForge.EVENT_BUS.register(screenshotHandler);
     }
 
