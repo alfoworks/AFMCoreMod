@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import ru.allformine.afmcm.screenshot.ScreenshotMaker;
 
+import java.util.Base64;
+
 public class ScreenshotProxy {
 
     @SubscribeEvent
@@ -16,6 +18,10 @@ public class ScreenshotProxy {
         byte[] image = ScreenshotMaker.getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer());
 
         if (image != null) {
+            String test = Base64.getEncoder().encodeToString(image);
+            System.out.println("Test");
+            System.out.println(test);
+
             byte[][] chunkedImage = Util.splitArray(image, 10240);
 
             if (chunkedImage != null) {
