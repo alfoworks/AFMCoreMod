@@ -27,10 +27,7 @@ public class ScreenshotProxy {
             if (chunkedImage != null) {
                 for (byte[] chunk : chunkedImage) {
                     ByteBuf buf = Unpooled.buffer(0);
-                    buf.writeByte(1);
                     buf.writeBytes(chunk);
-
-                    System.out.println(chunk.length);
 
                     C17PacketCustomPayload packet = new C17PacketCustomPayload("C234Fb", buf);
                     mc.thePlayer.sendQueue.addToSendQueue(packet);
