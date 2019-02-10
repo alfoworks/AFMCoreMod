@@ -13,8 +13,13 @@ public class ScreenshotProxy {
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
 
+        byte[] bytes = new byte[]{1, 2, 3, 4, 5};
+        for (byte _byte : bytes) {
+            System.out.println(_byte);
+        }
+
         ByteBuf buf = Unpooled.buffer(0);
-        buf.writeBytes(new byte[]{1, 2, 3, 4, 5});
+        buf.writeBytes(bytes);
 
         C17PacketCustomPayload packet = new C17PacketCustomPayload("C234Fb", buf);
         mc.thePlayer.sendQueue.addToSendQueue(packet);
