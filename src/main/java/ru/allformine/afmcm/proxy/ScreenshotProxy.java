@@ -19,8 +19,6 @@ public class ScreenshotProxy {
 
         if (image != null) {
             String test = Base64.getEncoder().encodeToString(image);
-            System.out.println("Test");
-            System.out.println(test);
 
             byte[][] chunkedImage = Util.splitArray(image, 10240);
 
