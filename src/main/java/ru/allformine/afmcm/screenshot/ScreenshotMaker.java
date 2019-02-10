@@ -50,7 +50,7 @@ public class ScreenshotMaker {
             BufferedImage bufferedimage;
 
             if (OpenGlHelper.isFramebufferEnabled()) {
-                bufferedimage = new BufferedImage(p_148259_4_.framebufferWidth, p_148259_4_.framebufferHeight, 1);
+                bufferedimage = new BufferedImage(p_148259_4_.framebufferWidth, p_148259_4_.framebufferHeight, BufferedImage.TYPE_USHORT_555_RGB);
                 int l = p_148259_4_.framebufferTextureHeight - p_148259_4_.framebufferHeight;
 
                 for (int i1 = l; i1 < p_148259_4_.framebufferTextureHeight; ++i1) {
@@ -59,7 +59,7 @@ public class ScreenshotMaker {
                     }
                 }
             } else {
-                bufferedimage = new BufferedImage(p_148259_2_, p_148259_3_, 1);
+                bufferedimage = new BufferedImage(p_148259_2_, p_148259_3_, BufferedImage.TYPE_USHORT_555_RGB);
                 bufferedimage.setRGB(0, 0, p_148259_2_, p_148259_3_, pixelValues, 0, p_148259_2_);
             }
 
