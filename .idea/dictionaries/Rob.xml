@@ -2,6 +2,9 @@
   <dictionary name="Rob">
     <words>
       <w>chunked</w>
+      <w>extralowres</w>
+      <w>grayscale</w>
+      <w>lowres</w>
     </words>
   </dictionary>
 </component>

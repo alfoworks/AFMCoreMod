@@ -20,7 +20,7 @@ public class ScreenshotMaker {
     private static IntBuffer pixelBuffer;
     private static int[] pixelValues;
 
-    public static byte[] getScreenshotByteArray(int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_) {
+    public static byte[] getScreenshotByteArray(int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_, int imgType) {
         try {
             if (OpenGlHelper.isFramebufferEnabled()) {
                 p_148259_2_ = p_148259_4_.framebufferTextureWidth;
@@ -50,7 +50,7 @@ public class ScreenshotMaker {
             BufferedImage bufferedimage;
 
             if (OpenGlHelper.isFramebufferEnabled()) {
-                bufferedimage = new BufferedImage(p_148259_4_.framebufferWidth, p_148259_4_.framebufferHeight, BufferedImage.TYPE_USHORT_555_RGB);
+                bufferedimage = new BufferedImage(p_148259_4_.framebufferWidth, p_148259_4_.framebufferHeight, imgType);
                 int l = p_148259_4_.framebufferTextureHeight - p_148259_4_.framebufferHeight;
 
                 for (int i1 = l; i1 < p_148259_4_.framebufferTextureHeight; ++i1) {
@@ -59,7 +59,7 @@ public class ScreenshotMaker {
                     }
                 }
             } else {
-                bufferedimage = new BufferedImage(p_148259_2_, p_148259_3_, BufferedImage.TYPE_USHORT_555_RGB);
+                bufferedimage = new BufferedImage(p_148259_2_, p_148259_3_, imgType);
                 bufferedimage.setRGB(0, 0, p_148259_2_, p_148259_3_, pixelValues, 0, p_148259_2_);
             }
 
