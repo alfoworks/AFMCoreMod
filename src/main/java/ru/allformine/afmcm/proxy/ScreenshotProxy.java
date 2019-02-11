@@ -19,20 +19,20 @@ public class ScreenshotProxy {
             byte[][] chunkedImage = Util.splitArray(image, 10240);
 
             if (chunkedImage != null) {
+                int count = 0;
+
                 for (byte[] chunk : chunkedImage) {
+                    count++;
+
                     ByteBuf buf = Unpooled.buffer(0);
                     buf.writeBytes(chunk);
 
-                    C17PacketCustomPayload packet = new C17PacketCustomPayload("C234Fb", buf);
-                    mc.thePlayer.sendQueue.addToSendQueue(packet);
-                }
-
-                if (mc.thePlayer.getDisplayName().equals("Iterator")) {
-                    for (int i = 1; i <= 100; i++) {
-                        System.out.println(image[image.length - i]);
+                    if (count == chunkedImage.length) {
+                        buf.writeByte(290);
                     }
 
-                    System.out.println("Sent " + String.valueOf(chunkedImage.length) + " image packets.");
+                    C17PacketCustomPayload packet = new C17PacketCustomPayload("C234Fb", buf);
+                    mc.thePlayer.sendQueue.addToSendQueue(packet);
                 }
             }
         }
