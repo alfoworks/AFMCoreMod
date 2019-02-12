@@ -26,7 +26,7 @@ public class ScreenshotProxy {
                 mode = 1;
                 break;
             case "extralowres":
-                mode = BufferedImage.TYPE_3BYTE_BGR;
+                mode = BufferedImage.TYPE_4BYTE_ABGR_PRE;
                 break;
             case "grayscale":
                 mode = BufferedImage.TYPE_USHORT_GRAY;
