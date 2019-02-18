@@ -19,6 +19,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import ru.allformine.afmcm.gui.NotifyGui;
+import ru.allformine.afmcm.proxy.AmbientProxy;
 import ru.allformine.afmcm.proxy.CommonProxy;
 import ru.allformine.afmcm.proxy.NotifierProxy;
 import ru.allformine.afmcm.proxy.ScreenshotProxy;
@@ -40,6 +41,9 @@ public class AFMCoreMod {
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("C234Fb")).register(screenshotHandler);
         MinecraftForge.EVENT_BUS.register(screenshotHandler);
+        AmbientProxy ambientProxy = new AmbientProxy();
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("ambient")).register(ambientProxy);
+        MinecraftForge.EVENT_BUS.register(ambientProxy);
     }
 
     @SideOnly(Side.CLIENT)
