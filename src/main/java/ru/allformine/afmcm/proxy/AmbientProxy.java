@@ -33,6 +33,8 @@ public class AmbientProxy {
                         clip.open(as1);
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
                         clip.start();
+
+                        References.activeBackgroundMusic = clip;
                     }
                 } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
                     Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Error playing music from URL " + url));
