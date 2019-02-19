@@ -10,9 +10,7 @@ import ru.allformine.afmcm.References;
 import sun.net.www.protocol.http.HttpURLConnection;
 
 import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 public class AmbientProxy {
@@ -34,10 +32,8 @@ public class AmbientProxy {
                 try {
                     HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
                     con.setRequestMethod("GET");
-                    InputStream bis = new BufferedInputStream(con.getInputStream());
-                    con.disconnect();
 
-                    AudioInputStream as1 = AudioSystem.getAudioInputStream(bis);
+                    AudioInputStream as1 = AudioSystem.getAudioInputStream(con.getInputStream());
                     AudioFormat af = as1.getFormat();
                     Clip clip = AudioSystem.getClip();
                     DataLine.Info info = new DataLine.Info(Clip.class, af);
@@ -51,6 +47,8 @@ public class AmbientProxy {
 
                         References.activeBackgroundMusic = clip;
                     }
+
+                    con.disconnect();
                 } catch (LineUnavailableException | IOException | IllegalArgumentException | UnsupportedAudioFileException e) {
                     Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Error playing music from URL " + url + "(" + e.getMessage() + ")"));
                 }
