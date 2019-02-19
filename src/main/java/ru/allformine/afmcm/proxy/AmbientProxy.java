@@ -16,9 +16,15 @@ public class AmbientProxy {
     @SubscribeEvent
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         ByteBuf buf = event.packet.payload();
+        byte mode = buf.readByte();
 
-        switch (buf.readByte()) {
+        switch (mode) {
             case 1: // начать проигрывание
+                if (References.activeBackgroundMusic != null) {
+                    References.activeBackgroundMusic.stop();
+                    References.activeBackgroundMusic = null;
+                }
+
                 String url = ByteBufUtils.readUTF8String(buf);
 
                 try {
