@@ -25,6 +25,7 @@ public class AmbientProxy {
                     References.activeBackgroundMusic = null;
                 }
 
+                ByteBufUtils.readUTF8String(buf);
                 String url = ByteBufUtils.readUTF8String(buf);
 
                 try {
