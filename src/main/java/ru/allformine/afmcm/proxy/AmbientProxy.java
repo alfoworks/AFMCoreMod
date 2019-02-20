@@ -7,11 +7,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import ru.allformine.afmcm.References;
-import sun.net.www.protocol.http.HttpURLConnection;
+import ru.allformine.afmcm.audioplayer.AudioPlayer;
+import ru.allformine.afmcm.audioplayer.MarkErrorInputStream;
 
-import javax.sound.sampled.*;
-import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class AmbientProxy {
     @SubscribeEvent
@@ -21,42 +23,28 @@ public class AmbientProxy {
 
         switch (mode) {
             case 1: // начать проигрывание
-                if (References.activeBackgroundMusic != null) {
-                    References.activeBackgroundMusic.stop();
-                    References.activeBackgroundMusic = null;
+                if (References.activePlayer != null) {
+                    References.activePlayer.close();
+                    References.activePlayer = null;
                 }
 
                 ByteBufUtils.readUTF8String(buf);
                 String url = ByteBufUtils.readUTF8String(buf);
 
                 try {
-                    HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-                    con.setRequestMethod("GET");
+                    URLConnection con = new URL(url).openConnection();
+                    InputStream bis = new MarkErrorInputStream(new BufferedInputStream(con.getInputStream()));
 
-                    AudioInputStream as1 = AudioSystem.getAudioInputStream(con.getInputStream());
-                    AudioFormat af = as1.getFormat();
-                    Clip clip = AudioSystem.getClip();
-                    DataLine.Info info = new DataLine.Info(Clip.class, af);
-
-                    Line line1 = AudioSystem.getLine(info);
-
-                    if (!line1.isOpen()) {
-                        clip.open(as1);
-                        clip.loop(Clip.LOOP_CONTINUOUSLY);
-                        clip.start();
-
-                        References.activeBackgroundMusic = clip;
-                    }
-
-                    con.disconnect();
-                } catch (LineUnavailableException | IOException | IllegalArgumentException | UnsupportedAudioFileException e) {
-                    Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Error playing music from URL " + url + "(" + e.getMessage() + ")"));
+                    References.activePlayer = new AudioPlayer(bis);
+                    References.activePlayer.play();
+                } catch (Exception e) {
+                    Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Error playing music from URL " + url));
                 }
                 break;
             case 2: // остановить проигрывание
-                if (References.activeBackgroundMusic != null) {
-                    References.activeBackgroundMusic.stop();
-                    References.activeBackgroundMusic = null;
+                if (References.activePlayer != null) {
+                    References.activePlayer.close();
+                    References.activePlayer = null;
                 }
                 break;
         }

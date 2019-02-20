@@ -91,9 +91,9 @@ public class AFMCoreMod {
         System.out.println("Changing Discord RPC status (ClientDisconnectionFromServerEvent)");
         rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
 
-        if (References.activeBackgroundMusic != null) {
-            References.activeBackgroundMusic.stop();
-            References.activeBackgroundMusic = null;
+        if (References.activePlayer != null) {
+            References.activePlayer.close();
+            References.activePlayer = null;
         }
     }
 

@@ -1,6 +1,6 @@
 package ru.allformine.afmcm;
 
-import javax.sound.sampled.Clip;
+import ru.allformine.afmcm.audioplayer.AudioPlayer;
 
 public class References {
     public static String notifyText = "";
@@ -12,5 +12,5 @@ public class References {
     public static String serverName = "";
     public static String nickname = "";
 
-    public static Clip activeBackgroundMusic;
+    public static AudioPlayer activePlayer;
 }
