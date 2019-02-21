@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-public class AudioPlayer {
+public class AudioPlayer extends Thread {
     private InputStream stream;
     private IntBuffer source;
     private IntBuffer buffer;
@@ -40,7 +40,7 @@ public class AudioPlayer {
         this.stream = stream;
     }
 
-    public void play() throws IOException {
+    public void run() {
         AudioInputStream in = (AudioInputStream) this.stream;
 
         final AudioFormat outFormat = getOutFormat(in.getFormat());
@@ -55,7 +55,7 @@ public class AudioPlayer {
 
         AL10.alSourcei(this.source.get(0), AL10.AL_LOOPING, AL10.AL_TRUE);
         AL10.alSourcef(this.source.get(0), AL10.AL_PITCH, 1.0f);
-        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, 0.0F * Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.RECORDS));
+        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, 1.0F * Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.RECORDS));
 
         if (alError()) {
             close();
@@ -64,15 +64,19 @@ public class AudioPlayer {
 
         this.playing = true;
 
-        stream(AudioSystem.getAudioInputStream(outFormat, in));
+        try {
+            stream(AudioSystem.getAudioInputStream(outFormat, in));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (this.playing) {
             while (AL10.alGetSourcei(this.source.get(0), AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING) {
-                try {
+                /*try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         }
 

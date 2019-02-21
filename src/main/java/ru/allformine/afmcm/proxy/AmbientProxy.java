@@ -10,10 +10,10 @@ import ru.allformine.afmcm.References;
 import ru.allformine.afmcm.audioplayer.AudioPlayer;
 import ru.allformine.afmcm.audioplayer.MarkErrorInputStream;
 
+import javax.sound.sampled.AudioSystem;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class AmbientProxy {
     @SubscribeEvent
@@ -32,13 +32,15 @@ public class AmbientProxy {
                 String url = ByteBufUtils.readUTF8String(buf);
 
                 try {
-                    URLConnection con = new URL(url).openConnection();
-                    InputStream bis = new MarkErrorInputStream(new BufferedInputStream(con.getInputStream()));
+                    InputStream is = new URL("http://allformine.ru/static/tf29.mp3").openStream();
+                    BufferedInputStream bis = new BufferedInputStream(is);
 
-                    References.activePlayer = new AudioPlayer(bis);
-                    References.activePlayer.play();
+                    References.activePlayer = new AudioPlayer(AudioSystem.getAudioInputStream(new MarkErrorInputStream(bis)));
+                    References.activePlayer.start();
                 } catch (Exception e) {
                     Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Error playing music from URL " + url));
+
+                    e.printStackTrace();
                 }
                 break;
             case 2: // остановить проигрывание
