@@ -31,8 +31,12 @@ public class AmbientProxy {
                 ByteBufUtils.readUTF8String(buf);
                 String url = ByteBufUtils.readUTF8String(buf);
 
+                if (Minecraft.getMinecraft().thePlayer.getDisplayName().equals("Iterator")) {
+                    Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Playing from URL \"" + url + "\""));
+                }
+
                 try {
-                    InputStream is = new URL("http://allformine.ru/static/tf29.mp3").openStream();
+                    InputStream is = new URL(url).openStream();
                     BufferedInputStream bis = new BufferedInputStream(is);
 
                     References.activePlayer = new AudioPlayer(AudioSystem.getAudioInputStream(new MarkErrorInputStream(bis)));
