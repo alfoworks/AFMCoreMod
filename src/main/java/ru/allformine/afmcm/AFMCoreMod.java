@@ -19,10 +19,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import ru.allformine.afmcm.gui.NotifyGui;
-import ru.allformine.afmcm.proxy.AmbientProxy;
-import ru.allformine.afmcm.proxy.CommonProxy;
-import ru.allformine.afmcm.proxy.NotifierProxy;
-import ru.allformine.afmcm.proxy.ScreenshotProxy;
+import ru.allformine.afmcm.gui.TerritoryShowGui;
+import ru.allformine.afmcm.proxy.*;
 import ru.allformine.afmcm.rpc.rpci;
 
 import java.io.File;
@@ -44,13 +42,22 @@ public class AFMCoreMod {
         AmbientProxy ambientProxy = new AmbientProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("ambient")).register(ambientProxy);
         MinecraftForge.EVENT_BUS.register(ambientProxy);
+        TerritoryShowProxy tsProxy = new TerritoryShowProxy();
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("territoryshow")).register(tsProxy);
+        MinecraftForge.EVENT_BUS.register(tsProxy);
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onRenderGui(RenderGameOverlayEvent.Pre event) {
-        if ((event.type == RenderGameOverlayEvent.ElementType.TEXT) && References.notifyText.length() > 0 && References.notifyDrawing) {
-            new NotifyGui(References.notifyText, Minecraft.getMinecraft(), event);
+        if ((event.type == RenderGameOverlayEvent.ElementType.TEXT)) {
+            if(References.notifyText.length() > 0 && References.notifyDrawing) {
+                new NotifyGui(References.notifyText, Minecraft.getMinecraft(), event);
+            }
+
+            if(References.territoryText.length() > 0) {
+                new TerritoryShowGui(References.territoryText, Minecraft.getMinecraft(), event);
+            }
         }
     }
 
@@ -94,6 +101,10 @@ public class AFMCoreMod {
         if (References.activePlayer != null) {
             References.activePlayer.close();
             References.activePlayer = null;
+        }
+
+        if (References.territoryText.length() > 0) {
+            References.territoryText = "";
         }
     }
 
