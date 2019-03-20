@@ -55,7 +55,7 @@ public class AudioPlayer extends Thread {
 
         AL10.alSourcei(this.source.get(0), AL10.AL_LOOPING, AL10.AL_TRUE);
         AL10.alSourcef(this.source.get(0), AL10.AL_PITCH, 1.0f);
-        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, 1.0F * Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.RECORDS));
+        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.MUSIC));
 
         if (alError()) {
             close();
@@ -72,11 +72,11 @@ public class AudioPlayer extends Thread {
 
         if (this.playing) {
             while (AL10.alGetSourcei(this.source.get(0), AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING) {
-                /*try {
+                try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }*/
+                }
             }
         }
 
