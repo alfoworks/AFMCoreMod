@@ -6,9 +6,12 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import ru.allformine.afmcm.AFMCoreMod;
 import ru.allformine.afmcm.References;
 import ru.allformine.afmcm.audioplayer.AudioPlayer;
 import ru.allformine.afmcm.audioplayer.MarkErrorInputStream;
+import ru.allformine.afmcm.music.MusicThread;
 
 import javax.sound.sampled.AudioSystem;
 import java.io.BufferedInputStream;
@@ -29,24 +32,18 @@ public class AmbientProxy {
                 }
 
                 ByteBufUtils.readUTF8String(buf);
-                String url = ByteBufUtils.readUTF8String(buf);
 
-                try {
-                    InputStream is = new URL(url).openStream();
-                    BufferedInputStream bis = new BufferedInputStream(is);
+                References.activeMusicUrl = ByteBufUtils.readUTF8String(buf);
 
-                    References.activePlayer = new AudioPlayer(AudioSystem.getAudioInputStream(new MarkErrorInputStream(bis)));
-                    References.activePlayer.start();
-                } catch (Exception e) {
-                    Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Error playing music from URL " + url));
+                new MusicThread(References.activeMusicUrl).run();
 
-                    e.printStackTrace();
-                }
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.DARK_PURPLE+"[AmbientMusic] "+EnumChatFormatting.RESET+"Нажмите M для переключения музыки."));
                 break;
             case 2: // остановить проигрывание
                 if (References.activePlayer != null) {
                     References.activePlayer.close();
                     References.activePlayer = null;
+                    References.activeMusicUrl = "";
                 }
                 break;
         }
