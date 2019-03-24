@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import org.lwjgl.input.Keyboard;
 import ru.allformine.afmcm.AFMCoreMod;
 import ru.allformine.afmcm.References;
 import ru.allformine.afmcm.audioplayer.AudioPlayer;
@@ -31,13 +32,17 @@ public class AmbientProxy {
                     References.activePlayer = null;
                 }
 
+                if(!References.musicEnabled) {
+                    return;
+                }
+
                 ByteBufUtils.readUTF8String(buf);
 
                 References.activeMusicUrl = ByteBufUtils.readUTF8String(buf);
 
-                new MusicThread(References.activeMusicUrl).run();
+                new MusicThread(References.activeMusicUrl).start();
 
-                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.DARK_PURPLE+"[AmbientMusic] "+EnumChatFormatting.RESET+"Нажмите M для переключения музыки."));
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.DARK_PURPLE+"[AmbientMusic] "+EnumChatFormatting.RESET+"Нажмите "+ Keyboard.getKeyName(AFMCoreMod.SWITCH_MUSIC.getKeyCode()) +" для переключения музыки."));
                 break;
             case 2: // остановить проигрывание
                 if (References.activePlayer != null) {

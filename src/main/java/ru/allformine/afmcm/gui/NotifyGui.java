@@ -4,16 +4,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import java.util.List;
+import java.util.ArrayList;
 
 public class NotifyGui extends Gui {
     private final double cycle = ((System.nanoTime() / 1000) % 0x200000) / (double) 0x200000;
 
-    private List<String> text;
+    private ArrayList<String> text;
     private Minecraft mc;
     private RenderGameOverlayEvent event;
 
-    public NotifyGui(List<String> text, Minecraft mc, RenderGameOverlayEvent event) {
+    public NotifyGui(ArrayList<String> text, Minecraft mc, RenderGameOverlayEvent event) {
         this.text = text;
         this.mc = mc;
         this.event = event;

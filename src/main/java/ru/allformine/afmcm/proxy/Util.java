@@ -2,7 +2,6 @@ package ru.allformine.afmcm.proxy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,10 +25,10 @@ class Util {
         return arrays;
     }
 
-    public static List<String> splitString(String msg, int lineSize) {
-        List<String> res = new ArrayList<>();
+    static ArrayList<String> splitString(String msg) {
+        ArrayList<String> res = new ArrayList<>();
 
-        Pattern p = Pattern.compile("\\b.+" + (lineSize-1) + "}\\b\\W?");
+        Pattern p = Pattern.compile("\\b.+19}\\b\\W?");
         Matcher m = p.matcher(msg);
 
         while(m.find()) {

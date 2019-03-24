@@ -20,7 +20,7 @@ public class NotifierProxy {
 
         if(text.length() > 0) {
             mc.thePlayer.playSound("afmcm:nstart", mc.gameSettings.getSoundLevel(SoundCategory.MASTER), 1.0F);
-            References.notifyText = Util.splitString(text, 20);
+            References.notifyText = Util.splitString(text);
             References.notifyDrawing = true;
         }
     }

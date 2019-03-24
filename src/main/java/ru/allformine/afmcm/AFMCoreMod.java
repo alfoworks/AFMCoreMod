@@ -18,6 +18,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -27,7 +29,6 @@ import ru.allformine.afmcm.gui.TerritoryShowGui;
 import ru.allformine.afmcm.music.MusicThread;
 import ru.allformine.afmcm.proxy.*;
 import ru.allformine.afmcm.rpc.rpci;
-
 import java.io.File;
 
 @Mod(modid = "afmcm")
@@ -139,14 +140,17 @@ public class AFMCoreMod {
             config.save();
 
             if(References.musicEnabled) {
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.GREEN+"[AmbientMusic] Музыка включена"));
+
                 if(References.activeMusicUrl != null) {
-                    new MusicThread(References.activeMusicUrl).run();
+                    new MusicThread(References.activeMusicUrl).start();
                 }
             } else {
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED+"[AmbientMusic] Музыка выключена"));
+
                 if (References.activePlayer != null) {
                     References.activePlayer.close();
                     References.activePlayer = null;
-                    References.activeMusicUrl = "";
                 }
             }
         }

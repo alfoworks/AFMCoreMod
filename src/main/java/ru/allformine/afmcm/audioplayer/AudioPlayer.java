@@ -55,7 +55,7 @@ public class AudioPlayer extends Thread {
 
         AL10.alSourcei(this.source.get(0), AL10.AL_LOOPING, AL10.AL_TRUE);
         AL10.alSourcef(this.source.get(0), AL10.AL_PITCH, 1.0f);
-        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.MUSIC));
+        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, 0.5F);
 
         if (alError()) {
             close();
