@@ -17,5 +17,4 @@ public class References {
 
     public static AudioPlayer activePlayer;
     public static boolean musicEnabled = true;
-    public static String activeMusicUrl;
 }

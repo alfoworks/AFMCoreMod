@@ -199,6 +199,7 @@
     </dictionary>
     <dictionary name="Rob">
       <words>
+        <w>keybinds</w>
         <w>territoryshow</w>
         <w>webhook</w>
       </words>

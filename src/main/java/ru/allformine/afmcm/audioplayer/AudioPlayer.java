@@ -19,6 +19,7 @@ public class AudioPlayer extends Thread {
     private InputStream stream;
     private IntBuffer source;
     private IntBuffer buffer;
+    private float volume = 0.2F;
 
     private boolean playing = false;
 
@@ -55,7 +56,7 @@ public class AudioPlayer extends Thread {
 
         AL10.alSourcei(this.source.get(0), AL10.AL_LOOPING, AL10.AL_TRUE);
         AL10.alSourcef(this.source.get(0), AL10.AL_PITCH, 1.0f);
-        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, 0.5F);
+        AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, this.volume);
 
         if (alError()) {
             close();
@@ -124,6 +125,20 @@ public class AudioPlayer extends Thread {
         if (this.buffer != null) {
             AL10.alDeleteBuffers(this.buffer);
             this.buffer = null;
+        }
+    }
+
+    public void turnOn() {
+        this.volume = 0.2F;
+        if (this.playing && this.source != null) {
+            AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, this.volume);
+        }
+    }
+
+    public void turnOff() {
+        this.volume = 0F;
+        if (this.playing && this.source != null) {
+            AL10.alSourcef(this.source.get(0), AL10.AL_GAIN, this.volume);
         }
     }
 }

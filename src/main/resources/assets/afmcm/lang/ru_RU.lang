@@ -1,0 +1,6 @@
+#AmbientMusic
+messages.ambient.notify=Нажмите {} для переключения музыки.
+messages.ambient.on=Фоновая музыка включена.
+messages.ambient.off=Фоновая музыка выключена.
+keybinds.ambient_title=Фоновая музыка
+keybinds.ambient_desc=Переключить фоновую музыку

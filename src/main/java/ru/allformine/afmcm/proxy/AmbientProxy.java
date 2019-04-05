@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import ru.allformine.afmcm.AFMCoreMod;
@@ -27,28 +28,22 @@ public class AmbientProxy {
 
         switch (mode) {
             case 1: // начать проигрывание
-                if (References.activePlayer != null) {
-                    References.activePlayer.close();
-                    References.activePlayer = null;
-                }
-
-                if(!References.musicEnabled) {
-                    return;
-                }
-
                 ByteBufUtils.readUTF8String(buf);
 
-                References.activeMusicUrl = ByteBufUtils.readUTF8String(buf);
+                new MusicThread(ByteBufUtils.readUTF8String(buf)).start();
 
-                new MusicThread(References.activeMusicUrl).start();
+                if(References.musicEnabled) {
+                    References.activePlayer.turnOn();
+                } else {
+                    References.activePlayer.turnOff();
+                }
 
-                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.DARK_PURPLE+"[AmbientMusic] "+EnumChatFormatting.RESET+"Нажмите "+ Keyboard.getKeyName(AFMCoreMod.SWITCH_MUSIC.getKeyCode()) +" для переключения музыки."));
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation("messages.ambient.notify", Keyboard.getKeyName(AFMCoreMod.SWITCH_MUSIC.getKeyCode())));
                 break;
             case 2: // остановить проигрывание
-                if (References.activePlayer != null) {
+                if(References.activePlayer != null) {
                     References.activePlayer.close();
                     References.activePlayer = null;
-                    References.activeMusicUrl = "";
                 }
                 break;
         }

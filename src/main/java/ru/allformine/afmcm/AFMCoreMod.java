@@ -18,15 +18,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import org.lwjgl.input.Keyboard;
 import ru.allformine.afmcm.gui.NotifyGui;
 import ru.allformine.afmcm.gui.TerritoryShowGui;
-import ru.allformine.afmcm.music.MusicThread;
 import ru.allformine.afmcm.proxy.*;
 import ru.allformine.afmcm.rpc.rpci;
 import java.io.File;
@@ -37,7 +36,7 @@ public class AFMCoreMod {
     @SidedProxy(clientSide = "ru.allformine.afmcm.proxy.ClientProxy", serverSide = "ru.allformine.afmcm.proxy.CommonProxy")
     public static CommonProxy proxy;
     static Configuration config;
-    public static KeyBinding SWITCH_MUSIC= new KeyBinding("Включить/выключить фоновую музыку", Keyboard.KEY_M, "Фоновая музыка");
+    public static KeyBinding SWITCH_MUSIC= new KeyBinding(StatCollector.translateToLocal("keybinds.ambient_desc"), Keyboard.KEY_M, StatCollector.translateToLocal("keybinds.ambient_title"));
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -110,14 +109,13 @@ public class AFMCoreMod {
         System.out.println("Changing Discord RPC status (ClientDisconnectionFromServerEvent)");
         rpci.updateState("В меню", System.currentTimeMillis() / 1000L);
 
+        if (References.territoryText.length() > 0) {
+            References.territoryText = "";
+        }
+
         if (References.activePlayer != null) {
             References.activePlayer.close();
             References.activePlayer = null;
-            References.activeMusicUrl = "";
-        }
-
-        if (References.territoryText.length() > 0) {
-            References.territoryText = "";
         }
     }
 
@@ -137,22 +135,20 @@ public class AFMCoreMod {
     public void onKeyInputEvent(InputEvent.KeyInputEvent event) {
         if(SWITCH_MUSIC.isPressed()) {
             References.musicEnabled = !References.musicEnabled;
-            config.save();
 
             if(References.musicEnabled) {
-                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.GREEN+"[AmbientMusic] Музыка включена"));
-
-                if(References.activeMusicUrl != null) {
-                    new MusicThread(References.activeMusicUrl).start();
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation("messages.ambient.on"));
+                if(References.activePlayer != null) {
+                    References.activePlayer.turnOff();
                 }
             } else {
-                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED+"[AmbientMusic] Музыка выключена"));
-
-                if (References.activePlayer != null) {
-                    References.activePlayer.close();
-                    References.activePlayer = null;
+                Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation("messages.ambient.off"));
+                if(References.activePlayer != null) {
+                    References.activePlayer.turnOn();
                 }
             }
+
+            config.save();
         }
     }
 }
