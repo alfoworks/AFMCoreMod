@@ -1,25 +1,80 @@
 package ru.allformine.afmcm;
 
-import net.minecraft.init.Blocks;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.apache.logging.log4j.Logger;
+import ru.allformine.afmcm.discord.rpci;
+
+import java.io.File;
+import java.util.Collection;
 
 @Mod(modid = "afmcm")
 public class AFMCoreMod {
-    private static Logger logger;
+    public static Logger logger;
+    private static int rpcTick = 0;
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(this);
+
         logger = event.getModLog();
+
+        Configuration config = new Configuration(new File("config", "AFMCoreMod.cfg"));
+        config.load();
+
+        References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
+        References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
+        References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
+
+        config.save();
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+    public void postInit(FMLPostInitializationEvent event) {
+        rpci.initDiscord();
+    }
+
+    @SubscribeEvent
+    public void onLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        System.out.println("Changing Discord RPC status (ClientConnectedToServerEvent)");
+
+        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, ""));
+    }
+
+    @SubscribeEvent
+    public void onLoggedOut(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        System.out.println("Changing Discord RPC status (ClientDisconnectedFromServerEvent)");
+
+        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, ""));
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) { // обновление Discord RPC каждые 5 сек, если игрок на сервере
+        Minecraft mc = Minecraft.getMinecraft();                // (для показа онлайна)
+        if (mc.world == null || !mc.world.isRemote) {
+            return;
+        }
+
+        if (rpcTick > 100) {
+            rpcTick = 0;
+        }
+
+        rpcTick++;
+
+        if (rpcTick == 100 && mc.getConnection() != null) {
+            Collection<NetworkPlayerInfo> players = mc.getConnection().getPlayerInfoMap();
+
+            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + String.valueOf(players.size()) + " из " + String.valueOf(mc.getConnection().currentServerMaxPlayers) + ")"));
+        }
     }
 }
