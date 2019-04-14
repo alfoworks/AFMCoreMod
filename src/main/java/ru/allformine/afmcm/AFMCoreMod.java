@@ -46,7 +46,7 @@ public class AFMCoreMod {
         References.nickname = Minecraft.getMinecraft().getSession().getUsername();
 
         rpci.initDiscord();
-        rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L);
+        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L));
     }
 
     @SubscribeEvent
