@@ -12,7 +12,7 @@ public class rpci {
         STATE_ON_SERVER
     }
 
-    public static DiscordRichPresence getNewState(playerState state, String add) {
+    public static DiscordRichPresence getNewState(playerState state, String add, long time) {
         String text = "";
 
         if (state == playerState.STATE_IN_MENU) {
@@ -23,12 +23,12 @@ public class rpci {
 
         text = text + " " + add;
 
-        return new DiscordRichPresence.Builder(References.nickname).setBigImage(References.bigImageKey, References.serverName).setSmallImage("icon", "AFMCoreMod").setStartTimestamps(System.currentTimeMillis() / 1000L).setDetails(text).build();
+        return new DiscordRichPresence.Builder("Ник: " + References.nickname).setBigImage(References.bigImageKey, References.serverName).setSmallImage("icon", "AFMCoreMod").setStartTimestamps(time).setDetails(text).build();
     }
 
     public static void initDiscord() {
         DiscordRPC.discordRunCallbacks();
-        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(getNewState(playerState.STATE_IN_MENU, ""))).build();
+        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(getNewState(playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L))).build();
 
         DiscordRPC.discordInitialize(References.rpcAppId, handlers, true);
 

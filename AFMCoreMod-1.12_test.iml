@@ -31,6 +31,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="AFMCoreMod-1.12_main" />
     <orderEntry type="module" module-name="AFMCoreMod-1.12_api" />
+    <orderEntry type="library" name="Gradle: :discord-rpc:" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -40,7 +41,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: :discord-rpc:" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

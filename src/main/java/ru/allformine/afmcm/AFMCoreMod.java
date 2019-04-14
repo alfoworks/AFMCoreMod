@@ -21,7 +21,9 @@ import java.util.Collection;
 @Mod(modid = "afmcm")
 public class AFMCoreMod {
     public static Logger logger;
+
     private static int rpcTick = 0;
+    private static long rpcTime = 0;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -41,21 +43,28 @@ public class AFMCoreMod {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        References.nickname = Minecraft.getMinecraft().player.getDisplayNameString();
+
         rpci.initDiscord();
+        rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L);
     }
 
     @SubscribeEvent
     public void onLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        rpcTime = System.currentTimeMillis() / 1000L;
+
         System.out.println("Changing Discord RPC status (ClientConnectedToServerEvent)");
 
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, ""));
+        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "", rpcTime));
     }
 
     @SubscribeEvent
     public void onLoggedOut(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        rpcTime = System.currentTimeMillis() / 1000L;
+
         System.out.println("Changing Discord RPC status (ClientDisconnectedFromServerEvent)");
 
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, ""));
+        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", rpcTime));
     }
 
     @SubscribeEvent
@@ -74,7 +83,7 @@ public class AFMCoreMod {
         if (rpcTick == 100 && mc.getConnection() != null) {
             Collection<NetworkPlayerInfo> players = mc.getConnection().getPlayerInfoMap();
 
-            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + String.valueOf(players.size()) + " из " + String.valueOf(mc.getConnection().currentServerMaxPlayers) + ")"));
+            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + String.valueOf(players.size()) + " из " + String.valueOf(mc.getConnection().currentServerMaxPlayers) + ")", rpcTime));
         }
     }
 }
