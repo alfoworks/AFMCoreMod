@@ -43,7 +43,7 @@ public class AFMCoreMod {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        References.nickname = Minecraft.getMinecraft().player.getDisplayNameString();
+        References.nickname = Minecraft.getMinecraft().getSession().getUsername();
 
         rpci.initDiscord();
         rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L);
