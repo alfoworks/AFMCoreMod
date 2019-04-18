@@ -13,8 +13,8 @@
   <component name="McpModuleSettings">
     <option name="mappingFiles">
       <set>
-        <option value="C:\Users\Rob\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20171003\1.12.2\srgs\mcp-notch.srg" />
         <option value="C:\Users\Rob\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20171003\1.12.2\srgs\srg.exc" />
+        <option value="C:\Users\Rob\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20171003\1.12.2\srgs\mcp-notch.srg" />
         <option value="C:\Users\Rob\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20171003\1.12.2\srgs\mcp-srg.srg" />
         <option value="C:\Users\Rob\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20171003\1.12.2\srgs\notch-mcp.srg" />
         <option value="C:\Users\Rob\.gradle\caches\minecraft\de\oceanlabs\mcp\mcp_snapshot\20171003\1.12.2\srgs\notch-srg.srg" />

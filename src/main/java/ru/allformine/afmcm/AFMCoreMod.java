@@ -3,6 +3,7 @@ package ru.allformine.afmcm;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.rpci;
+import ru.allformine.afmcm.gui.DreamHudGui;
 
 import java.io.File;
 import java.util.Collection;
@@ -49,6 +51,7 @@ public class AFMCoreMod {
         DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L));
     }
 
+    // =========== DISCORD
     @SubscribeEvent
     public void onLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         rpcTime = System.currentTimeMillis() / 1000L;
@@ -85,5 +88,15 @@ public class AFMCoreMod {
 
             DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + String.valueOf(players.size()) + " из " + String.valueOf(mc.getConnection().currentServerMaxPlayers) + ")", rpcTime));
         }
+    }
+
+    // =========== DreamHud
+    @SubscribeEvent
+    public void onRender(RenderGameOverlayEvent.Text event) {
+        if (Minecraft.getMinecraft().player.isCreative()) {
+            return;
+        }
+
+        new DreamHudGui().drawScreen();
     }
 }
