@@ -3,6 +3,7 @@ package ru.allformine.afmcm;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -39,6 +40,8 @@ public class AFMCoreMod {
         References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
         References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
         References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
+        References.activateDreamHud = config.getBoolean("activateDreamHud", "dreamHud",
+                References.activateDreamHud, "Activates dream hud");
 
         config.save();
     }
@@ -92,11 +95,25 @@ public class AFMCoreMod {
 
     // =========== DreamHud
     @SubscribeEvent
+    public void onRender(RenderGameOverlayEvent event) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH
+                || event.getType() == RenderGameOverlayEvent.ElementType.FOOD
+                || event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+            if (event.isCancelable()) {
+                event.setCanceled(true);
+            }
+        } else if (event.getType() == RenderGameOverlayEvent.ElementType.ARMOR || event.getType() == RenderGameOverlayEvent.ElementType.AIR) {
+            GuiIngameForge.left_height = 45;
+            GuiIngameForge.right_height = 45;
+        }
+    }
+
+    @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
-        if (Minecraft.getMinecraft().player.isCreative()) {
+        if (Minecraft.getMinecraft().player.isCreative() || !References.activateDreamHud) {
             return;
         }
 
-        new DreamHudGui().drawScreen();
+        new DreamHudGui(event).drawScreen();
     }
 }
