@@ -93,27 +93,33 @@ public class AFMCoreMod {
         }
     }
 
+    private boolean readyToRender(){
+        if (Minecraft.getMinecraft().player.isCreative() || !References.activateDreamHud) {
+            return false;
+        }
+        return true;
+    }
+
     // =========== DreamHud
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent event) {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH
-                || event.getType() == RenderGameOverlayEvent.ElementType.FOOD
-                || event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
-            if (event.isCancelable()) {
-                event.setCanceled(true);
+        if(readyToRender()) {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH
+                    || event.getType() == RenderGameOverlayEvent.ElementType.FOOD
+                    || event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+                if (event.isCancelable()) {
+                    event.setCanceled(true);
+                }
+            } else if (event.getType() == RenderGameOverlayEvent.ElementType.ARMOR || event.getType() == RenderGameOverlayEvent.ElementType.AIR) {
+                GuiIngameForge.left_height = 45;
+                GuiIngameForge.right_height = 45;
             }
-        } else if (event.getType() == RenderGameOverlayEvent.ElementType.ARMOR || event.getType() == RenderGameOverlayEvent.ElementType.AIR) {
-            GuiIngameForge.left_height = 45;
-            GuiIngameForge.right_height = 45;
         }
     }
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
-        if (Minecraft.getMinecraft().player.isCreative() || !References.activateDreamHud) {
-            return;
-        }
-
-        new DreamHudGui(event).drawScreen();
+        if(readyToRender())
+            new DreamHudGui(event).drawScreen();
     }
 }
