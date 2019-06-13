@@ -17,5 +17,7 @@ public class References {
 
     public static String territoryText = "";
 
+    public static String category = "AFM Core Mod";
+
     // ============================================================= //
 }
