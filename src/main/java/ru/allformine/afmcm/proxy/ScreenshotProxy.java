@@ -55,7 +55,6 @@ public class ScreenshotProxy {
                     PacketBuffer packetBuffer = new PacketBuffer(buf);
                     CPacketCustomPayload packet = new CPacketCustomPayload("C234Fb", packetBuffer);
                     mc.player.connection.sendPacket(packet);
-                    //mc.player.sendQueue.addToSendQueue(packet);
                 }
             }
         }
