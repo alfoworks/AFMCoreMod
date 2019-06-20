@@ -53,8 +53,8 @@ public class ScreenshotProxy {
                     mc.player.connection.sendPacket(packet);
                 }
             }
-
-            System.out.println("Sent all image packets!");
+        } else {
+            System.out.println("Image is null");
         }
     }
 }

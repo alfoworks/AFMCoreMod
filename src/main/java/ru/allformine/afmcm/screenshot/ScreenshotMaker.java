@@ -69,9 +69,10 @@ public class ScreenshotMaker {
                 ImageIO.write(bufferedimage, "png", out);
                 return out.toByteArray();
             } catch (IOException e) {
-                return new byte[]{};
+                return null;
             }
         } catch (Exception exception) {
+            exception.printStackTrace();
             return null;
         }
     }
