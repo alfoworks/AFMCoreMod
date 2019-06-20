@@ -19,7 +19,6 @@ public class ScreenshotProxy {
         Minecraft mc = Minecraft.getMinecraft();
 
         ByteBuf _buf = event.getPacket().payload();
-        ByteBufUtils.readUTF8String(_buf);
         int mode;
 
         switch (ByteBufUtils.readUTF8String(_buf)) {
