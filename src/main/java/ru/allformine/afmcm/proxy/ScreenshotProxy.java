@@ -8,6 +8,7 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import ru.allformine.afmcm.References;
 import ru.allformine.afmcm.screenshot.ScreenshotMaker;
 
 import java.awt.image.BufferedImage;
@@ -34,15 +35,21 @@ public class ScreenshotProxy {
                 break;
         }
 
-        byte[] image = ScreenshotMaker.getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), mode);
+        mc.addScheduledTask(() -> {
+            References.lastImage = ScreenshotMaker.getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), mode);
+        });
 
-        if (image != null) {
-            byte[][] chunkedImage = Util.splitArray(image, 10240);
+        try {
+            Thread.sleep(1500); // Очень больщой костыль из-за проблем с потоками. Возможно, подойдет
+        } catch (InterruptedException e) { //synchronized
+            e.printStackTrace();
+        }
+
+        if (References.lastImage != null) {
+            byte[][] chunkedImage = Util.splitArray(References.lastImage, 10240);
 
             if (chunkedImage != null) {
-
                 for (byte[] chunk : chunkedImage) {
-
                     ByteBuf buf = Unpooled.buffer(0);
                     buf.writeBytes(chunk);
 

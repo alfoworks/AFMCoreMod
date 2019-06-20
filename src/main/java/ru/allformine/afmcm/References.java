@@ -8,8 +8,9 @@ public class References {
     public static String serverName = "Techfactor";
     public static String nickname = "";
 
+    public static byte[] lastImage = {};
+
     // ============================================================= //
-    //@SuppressWarnings("Access can be package-private") TODO
     public static boolean activateDreamHud = true;
 
     public static boolean notifyDrawing = false;
