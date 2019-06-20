@@ -26,9 +26,6 @@ public class ScreenshotProxy {
             case "highres":
                 mode = 1;
                 break;
-            case "extralowres":
-                mode = BufferedImage.TYPE_4BYTE_ABGR_PRE;
-                break;
             case "grayscale":
                 mode = BufferedImage.TYPE_USHORT_GRAY;
                 break;
@@ -53,7 +50,7 @@ public class ScreenshotProxy {
 
                     buf.writeByte(290);
                     PacketBuffer packetBuffer = new PacketBuffer(buf);
-                    CPacketCustomPayload packet = new CPacketCustomPayload("C234Fb", packetBuffer);
+                    CPacketCustomPayload packet = new CPacketCustomPayload("AN3234234A", packetBuffer);
                     mc.player.connection.sendPacket(packet);
                 }
             }

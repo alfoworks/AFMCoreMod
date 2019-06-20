@@ -61,7 +61,7 @@ public class AFMCoreMod {
         KeyBinder.register(new DreamHudSwitch());
         //MinecraftForge.EVENT_BUS.register(self.class);
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
-        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("C234Fb")).register(screenshotHandler);
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A")).register(screenshotHandler);
         MinecraftForge.EVENT_BUS.register(screenshotHandler);
     }
 
@@ -122,10 +122,7 @@ public class AFMCoreMod {
     }
 
     private boolean readyToRender(){
-        if (Minecraft.getMinecraft().player.isCreative() || !References.activateDreamHud) {
-            return false;
-        }
-        return true;
+        return !Minecraft.getMinecraft().player.isCreative() && References.activateDreamHud;
     }
 
     // =========== DreamHud
