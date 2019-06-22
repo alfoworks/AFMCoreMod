@@ -51,7 +51,7 @@ public class AFMCoreMod {
         References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
         References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
         References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
-        References.activateDreamHud = config.getBoolean("activateDreamHud", "dreamHud",
+        References.isActivatedDreamHud = config.getBoolean("activateDreamHud", "dreamHud",
                 References.activateDreamHud, "Activates dream hud");
 
         config.save();

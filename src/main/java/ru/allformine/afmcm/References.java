@@ -12,6 +12,7 @@ public class References {
 
     // ============================================================= //
     public static boolean activateDreamHud = true;
+    public static boolean isActivatedDreamHud = true;
 
     public static boolean notifyDrawing = false;
     public static ArrayList<String> notifyText = new ArrayList<>();
