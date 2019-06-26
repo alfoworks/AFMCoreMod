@@ -46,11 +46,12 @@ public class ScreenshotProxy {
         }
 
         if (References.lastImage != null) {
-            byte[][] chunkedImage = Util.splitArray(References.lastImage, 10200);
+            byte[][] chunkedImage = Util.splitArray(References.lastImage, 4096);
 
             if (chunkedImage != null) {
                 for (byte[] chunk : chunkedImage) {
                     ByteBuf buf = Unpooled.buffer(0);
+                    buf.writeBoolean(false);
                     buf.writeBytes(chunk);
 
                     PacketBuffer packetBuffer = new PacketBuffer(buf);
@@ -60,7 +61,7 @@ public class ScreenshotProxy {
 
                 // Отправляем пустой массив, как конец скриншота.
                 ByteBuf lastBuf = Unpooled.buffer();
-                lastBuf.writeBytes(new byte[]{});
+                lastBuf.writeBoolean(true);
                 mc.player.connection.sendPacket(new CPacketCustomPayload("AN3234234A", new PacketBuffer(lastBuf)));
             }
         }
