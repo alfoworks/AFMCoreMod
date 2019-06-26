@@ -53,15 +53,16 @@ public class ScreenshotProxy {
                     ByteBuf buf = Unpooled.buffer(0);
                     buf.writeBytes(chunk);
 
-
-                    buf.writeByte(290);
                     PacketBuffer packetBuffer = new PacketBuffer(buf);
                     CPacketCustomPayload packet = new CPacketCustomPayload("AN3234234A", packetBuffer);
                     mc.player.connection.sendPacket(packet);
                 }
+
+                // Отправляем пустой массив, как конец скриншота.
+                ByteBuf lastBuf = Unpooled.buffer();
+                lastBuf.writeBytes(new byte[]{});
+                mc.player.connection.sendPacket(new CPacketCustomPayload("AN3234234A", new PacketBuffer(lastBuf)));
             }
-        } else {
-            System.out.println("Image is null");
         }
     }
 }
