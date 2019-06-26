@@ -112,7 +112,6 @@ public class AFMCoreMod {
         if (!gameLoadedSoundFlag) ticksFromStart++;
 
         if (!gameLoadedSoundFlag && ticksFromStart > 60) {
-            System.out.println("ANAL");
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F));
 
             gameLoadedSoundFlag = true;
