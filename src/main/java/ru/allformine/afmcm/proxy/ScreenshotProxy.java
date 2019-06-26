@@ -46,7 +46,7 @@ public class ScreenshotProxy {
         }
 
         if (References.lastImage != null) {
-            byte[][] chunkedImage = Util.splitArray(References.lastImage, 10240);
+            byte[][] chunkedImage = Util.splitArray(References.lastImage, 10200);
 
             if (chunkedImage != null) {
                 for (byte[] chunk : chunkedImage) {
