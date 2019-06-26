@@ -2,7 +2,9 @@ package ru.allformine.afmcm;
 
 import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.init.SoundEvents;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,6 +40,8 @@ public class AFMCoreMod {
     private static int rpcTick = 0;
     private static long rpcTime = 0;
 
+    private long ticksFromStart = 0;
+    private boolean gameLoadedSoundFlag = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -104,6 +108,16 @@ public class AFMCoreMod {
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) { // обновление Discord RPC каждые 5 сек, если игрок на сервере
         Minecraft mc = Minecraft.getMinecraft();                // (для показа онлайна)
+
+        if (!gameLoadedSoundFlag) ticksFromStart++;
+
+        if (!gameLoadedSoundFlag && ticksFromStart > 60) {
+            System.out.println("ANAL");
+            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F));
+
+            gameLoadedSoundFlag = true;
+        }
+
         if (mc.world == null || !mc.world.isRemote) {
             return;
         }
