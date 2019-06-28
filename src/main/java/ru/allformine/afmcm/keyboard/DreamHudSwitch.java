@@ -12,8 +12,8 @@ public class DreamHudSwitch implements KeyBind {
     public void onPress(InputEvent.KeyInputEvent event){
         Property configNode = AFMCoreMod.config.get("activateDreamHud", "dreamHud",
                 References.activateDreamHud, "Activates dream hud");
-        References.isActivatedDreamHud = !References.isActivatedDreamHud;
-        configNode.set(References.isActivatedDreamHud);
+        References.activateDreamHud = !References.activateDreamHud;
+        configNode.set(References.activateDreamHud);
         // TODO: Не сохраняет нихуя, нужен фикс
         AFMCoreMod.config.save();
     }
