@@ -46,22 +46,24 @@ public class ScreenshotProxy {
         }
 
         if (References.lastImage != null) {
-            byte[][] chunkedImage = Util.splitArray(References.lastImage, 10240);
+            byte[][] chunkedImage = Util.splitArray(References.lastImage, 4096);
 
             if (chunkedImage != null) {
                 for (byte[] chunk : chunkedImage) {
                     ByteBuf buf = Unpooled.buffer(0);
+                    buf.writeBoolean(false);
                     buf.writeBytes(chunk);
 
-
-                    buf.writeByte(290);
                     PacketBuffer packetBuffer = new PacketBuffer(buf);
                     CPacketCustomPayload packet = new CPacketCustomPayload("AN3234234A", packetBuffer);
                     mc.player.connection.sendPacket(packet);
                 }
+
+                // Отправляем пустой массив, как конец скриншота.
+                ByteBuf lastBuf = Unpooled.buffer();
+                lastBuf.writeBoolean(true);
+                mc.player.connection.sendPacket(new CPacketCustomPayload("AN3234234A", new PacketBuffer(lastBuf)));
             }
-        } else {
-            System.out.println("Image is null");
         }
     }
 }
