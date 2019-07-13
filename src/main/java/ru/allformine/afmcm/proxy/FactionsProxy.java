@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import ru.allformine.afmcm.References;
 
-public class TerritoryShowProxy {
+public class FactionsProxy {
     @SubscribeEvent
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -17,7 +17,7 @@ public class TerritoryShowProxy {
         String text = ByteBufUtils.readUTF8String(buf);
 
         if(text.length() > 0) {
-            References.territoryText = text;
+            References.factionText = text;
         }
     }
 }

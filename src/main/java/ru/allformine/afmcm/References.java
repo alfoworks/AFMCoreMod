@@ -1,7 +1,5 @@
 package ru.allformine.afmcm;
 
-import java.util.ArrayList;
-
 public class References {
     public static String rpcAppId = "515590062667464715";
     public static String bigImageKey = "techno";
@@ -13,10 +11,7 @@ public class References {
     // ============================================================= //
     public static boolean activateDreamHud = true;
 
-    public static boolean notifyDrawing = false;
-    public static ArrayList<String> notifyText = new ArrayList<>();
-
-    public static String territoryText = "";
+    public static String factionText = "";
 
     public static String category = "AFM Core Mod";
 

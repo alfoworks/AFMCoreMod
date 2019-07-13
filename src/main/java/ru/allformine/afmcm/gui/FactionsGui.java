@@ -6,12 +6,12 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-public class TerritoryShowGui extends Gui {
+public class FactionsGui extends Gui {
     private String text;
     private Minecraft mc;
     private RenderGameOverlayEvent event;
 
-    public TerritoryShowGui(String text, Minecraft mc, RenderGameOverlayEvent event) {
+    public FactionsGui(String text, Minecraft mc, RenderGameOverlayEvent event) {
         this.text = "[" + text + TextFormatting.RESET+"]";
         this.mc = mc;
         this.event = event;

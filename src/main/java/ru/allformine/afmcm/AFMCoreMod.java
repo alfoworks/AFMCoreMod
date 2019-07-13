@@ -23,9 +23,11 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.rpci;
 import ru.allformine.afmcm.gui.DreamHudGui;
+import ru.allformine.afmcm.gui.FactionsGui;
 import ru.allformine.afmcm.keyboard.DreamHudSwitch;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
+import ru.allformine.afmcm.proxy.FactionsProxy;
 import ru.allformine.afmcm.proxy.ScreenshotProxy;
 
 import java.io.File;
@@ -63,10 +65,14 @@ public class AFMCoreMod {
     @EventHandler
     public void init(FMLInitializationEvent event){
         KeyBinder.register(new DreamHudSwitch());
-        //MinecraftForge.EVENT_BUS.register(self.class);
+
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A")).register(screenshotHandler);
         MinecraftForge.EVENT_BUS.register(screenshotHandler);
+
+        FactionsProxy factionsHandler = new FactionsProxy();
+        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("factions")).register(factionsHandler);
+        MinecraftForge.EVENT_BUS.register(factionsHandler);
     }
 
     @SubscribeEvent
@@ -159,5 +165,8 @@ public class AFMCoreMod {
     public void onRender(RenderGameOverlayEvent.Text event) {
         if(readyToRender())
             new DreamHudGui(event).drawScreen();
+
+        if (References.factionText.length() > 0)
+            new FactionsGui(References.factionText, Minecraft.getMinecraft(), event);
     }
 }
