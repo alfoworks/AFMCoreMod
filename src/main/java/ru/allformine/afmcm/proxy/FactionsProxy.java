@@ -13,7 +13,6 @@ public class FactionsProxy {
         Minecraft mc = Minecraft.getMinecraft();
 
         ByteBuf buf = event.getPacket().payload();
-        ByteBufUtils.readUTF8String(buf);
         String text = ByteBufUtils.readUTF8String(buf);
 
         if(text.length() > 0) {
