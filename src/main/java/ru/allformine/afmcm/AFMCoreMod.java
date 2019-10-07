@@ -128,13 +128,13 @@ public class AFMCoreMod {
             return;
         }
 
-        if (rpcTick > 100) {
-            rpcTick = 0;
-        }
+//        if (rpcTick > 100) {
+//            rpcTick = 0;
+//        }
 
-        rpcTick++;
+        rpcTick = (rpcTick + 1) % 100;
 
-        if (rpcTick == 100 && mc.getConnection() != null) {
+        if (rpcTick == 99 && mc.getConnection() != null) {
             Collection<NetworkPlayerInfo> players = mc.getConnection().getPlayerInfoMap();
 
             DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + players.size() + " из " + mc.getConnection().currentServerMaxPlayers + ")", rpcTime));
