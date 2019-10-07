@@ -37,6 +37,7 @@ import java.util.Collection;
 public class AFMCoreMod {
     public static Logger logger;
     public static Configuration config;
+    @SuppressWarnings("WeakerAccess")
     public static FMLEventChannel channel;
 
     private static int rpcTick = 0;
@@ -57,8 +58,8 @@ public class AFMCoreMod {
         References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
         References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
         References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
-        References.activateDreamHud = config.getBoolean("activateDreamHud", "dreamHud",
-                References.activateDreamHud, "Activates dream hud");
+        References.activateDreamHud = config.get("activateDreamHud", "dreamHud",
+                References.activateDreamHudDefault, "Activates dream hud");
 
         config.save();
     }
@@ -136,12 +137,12 @@ public class AFMCoreMod {
         if (rpcTick == 100 && mc.getConnection() != null) {
             Collection<NetworkPlayerInfo> players = mc.getConnection().getPlayerInfoMap();
 
-            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + String.valueOf(players.size()) + " из " + String.valueOf(mc.getConnection().currentServerMaxPlayers) + ")", rpcTime));
+            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + players.size() + " из " + mc.getConnection().currentServerMaxPlayers + ")", rpcTime));
         }
     }
 
     private boolean readyToRender(){
-        return !Minecraft.getMinecraft().player.isCreative() && References.activateDreamHud;
+        return !Minecraft.getMinecraft().player.isCreative() && References.activateDreamHud.getBoolean();
     }
 
     // =========== DreamHud
