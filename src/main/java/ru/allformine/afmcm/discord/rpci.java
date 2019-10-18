@@ -13,12 +13,12 @@ public class rpci {
     }
 
     public static DiscordRichPresence getNewState(playerState state, String add, long time) {
-        String text = "";
+        String text = References.serverName;
 
         if (state == playerState.STATE_IN_MENU) {
-            text = "В меню";
+            text += " В меню";
         } else if (state == playerState.STATE_ON_SERVER) {
-            text = "На сервере";
+            text += " На сервере";
         }
 
         text = text + " " + add;
