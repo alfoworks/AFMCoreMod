@@ -13,17 +13,15 @@ public class rpci {
     }
 
     public static DiscordRichPresence getNewState(playerState state, String add, long time) {
-        String text = References.serverName;
+        String text = "";
 
         if (state == playerState.STATE_IN_MENU) {
-            text += " В меню";
+            text = " В меню";
         } else if (state == playerState.STATE_ON_SERVER) {
-            text += " На сервере";
+            text = " На сервере";
         }
 
-        text = text + " " + add;
-
-        return new DiscordRichPresence.Builder("Ник: " + References.nickname).setBigImage(References.bigImageKey, References.serverName).setSmallImage("icon", "AFMCoreMod").setStartTimestamps(time).setDetails(text).build();
+        return new DiscordRichPresence.Builder(String.format("%s - ", text)).setBigImage(References.bigImageKey, References.serverName).setSmallImage("icon", "AFMCoreMod").setStartTimestamps(time).setDetails(References.serverName + add).build();
     }
 
     public static void initDiscord() {
