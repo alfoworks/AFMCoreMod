@@ -3,6 +3,7 @@ package ru.allformine.afmcm.discord;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
+import net.minecraft.client.Minecraft;
 import ru.allformine.afmcm.AFMCoreMod;
 import ru.allformine.afmcm.References;
 
@@ -21,7 +22,7 @@ public class rpci {
             text = " На сервере";
         }
 
-        return new DiscordRichPresence.Builder(String.format("%s - ", text)).setBigImage(References.bigImageKey, References.serverName).setSmallImage("icon", "AFMCoreMod").setStartTimestamps(time).setDetails(References.serverName + add).build();
+        return new DiscordRichPresence.Builder(String.format("%s - %s", References.nickname,text)).setBigImage(References.bigImageKey, References.serverName).setSmallImage("icon", "AFMCoreMod").setStartTimestamps(time).setDetails(References.serverName + add).build();
     }
 
     public static void initDiscord() {
