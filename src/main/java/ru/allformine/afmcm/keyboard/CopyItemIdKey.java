@@ -12,7 +12,6 @@ import ru.allformine.afmcm.References;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.util.Objects;
 
 public class CopyItemIdKey implements KeyBind {
     private static KeyBinding keyBinding = new KeyBinding("Copy held item ID", Keyboard.KEY_COMMA, References.category);
@@ -21,7 +20,11 @@ public class CopyItemIdKey implements KeyBind {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         ItemStack itemStack = player.getHeldItem(EnumHand.MAIN_HAND);
         if(!itemStack.isEmpty()){
-            String name = Objects.requireNonNull(itemStack.getItem().getRegistryName()).toString();
+            String name = itemStack.getItem().getRegistryName().toString();
+            int metadata = itemStack.getMetadata();
+            if(metadata != 0){
+                name =  name + ":" + metadata;
+            }
             StringSelection selection = new StringSelection(name);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
