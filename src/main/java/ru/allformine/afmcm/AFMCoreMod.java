@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.rpci;
 import ru.allformine.afmcm.gui.DreamHudGui;
 import ru.allformine.afmcm.gui.FactionsGui;
+import ru.allformine.afmcm.keyboard.CopyItemIdKey;
 import ru.allformine.afmcm.keyboard.DreamHudSwitch;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
@@ -66,6 +67,7 @@ public class AFMCoreMod {
     @EventHandler
     public void init(FMLInitializationEvent event){
         KeyBinder.register(new DreamHudSwitch());
+        KeyBinder.register(new CopyItemIdKey());
 
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A")).register(screenshotHandler);
