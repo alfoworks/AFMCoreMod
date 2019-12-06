@@ -5,6 +5,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 import ru.allformine.afmcm.References;
@@ -20,7 +22,12 @@ public class CopyItemIdKey implements KeyBind {
         EntityPlayerSP player = Minecraft.getMinecraft().player;
         ItemStack itemStack = player.getHeldItem(EnumHand.MAIN_HAND);
         if(!itemStack.isEmpty()){
-            String name = itemStack.getItem().getRegistryName().toString();
+            ResourceLocation registryName = itemStack.getItem().getRegistryName();
+            if(registryName == null) {
+                player.sendMessage(new TextComponentString("Unable to copy registry name: It will cause NPE."));
+                return;
+            }
+            String name = registryName.toString();
             int metadata = itemStack.getMetadata();
             if(metadata != 0){
                 name =  name + ":" + metadata;
@@ -28,6 +35,7 @@ public class CopyItemIdKey implements KeyBind {
             StringSelection selection = new StringSelection(name);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
+            player.sendMessage(new TextComponentString("Copied \"" + name + "\""));
         }
     }
 
