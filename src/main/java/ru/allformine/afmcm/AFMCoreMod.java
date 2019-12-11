@@ -22,10 +22,8 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.rpci;
-import ru.allformine.afmcm.gui.DreamHudGui;
 import ru.allformine.afmcm.gui.FactionsGui;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
-import ru.allformine.afmcm.keyboard.DreamHudSwitch;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
 import ru.allformine.afmcm.proxy.FactionsProxy;
@@ -59,14 +57,11 @@ public class AFMCoreMod {
         References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
         References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
         References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
-        References.activateDreamHud = config.get("activateDreamHud", "dreamHud",
-                References.activateDreamHudDefault, "Activates dream hud");
 
         config.save();
     }
     @EventHandler
     public void init(FMLInitializationEvent event){
-        KeyBinder.register(new DreamHudSwitch());
         KeyBinder.register(new CopyItemIdKey());
 
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
@@ -143,32 +138,8 @@ public class AFMCoreMod {
         }
     }
 
-    private boolean readyToRender(){
-        return !Minecraft.getMinecraft().player.isCreative() && References.activateDreamHud.getBoolean();
-    }
-
-    // =========== DreamHud
-    @SubscribeEvent
-    public void onRender(RenderGameOverlayEvent event) {
-        if(readyToRender()) {
-            if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH
-                    || event.getType() == RenderGameOverlayEvent.ElementType.FOOD
-                    || event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
-                if (event.isCancelable()) {
-                    event.setCanceled(true);
-                }
-            } else if (event.getType() == RenderGameOverlayEvent.ElementType.ARMOR || event.getType() == RenderGameOverlayEvent.ElementType.AIR) {
-                GuiIngameForge.left_height = 45;
-                GuiIngameForge.right_height = 45;
-            }
-        }
-    }
-
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
-        if(readyToRender())
-            new DreamHudGui(event).drawScreen();
-
         if (References.factionText.length() > 0)
             new FactionsGui(References.factionText, Minecraft.getMinecraft(), event);
     }
