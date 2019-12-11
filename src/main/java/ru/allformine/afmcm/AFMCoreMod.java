@@ -2,10 +2,6 @@ package ru.allformine.afmcm;
 
 import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.init.SoundEvents;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -16,9 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.rpci;
@@ -26,11 +20,11 @@ import ru.allformine.afmcm.gui.FactionsGui;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
+import ru.allformine.afmcm.listener.DiscordListener;
 import ru.allformine.afmcm.proxy.FactionsProxy;
 import ru.allformine.afmcm.proxy.ScreenshotProxy;
 
 import java.io.File;
-import java.util.Collection;
 
 @Mod(modid = "afmcm")
 public class AFMCoreMod {
@@ -38,12 +32,6 @@ public class AFMCoreMod {
     public static Configuration config;
     @SuppressWarnings("WeakerAccess")
     public static FMLEventChannel channel;
-
-    private static int rpcTick = 0;
-    private static long rpcTime = 0;
-
-    private long ticksFromStart = 0;
-    private boolean gameLoadedSoundFlag = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -71,6 +59,8 @@ public class AFMCoreMod {
         FactionsProxy factionsHandler = new FactionsProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("factions")).register(factionsHandler);
         MinecraftForge.EVENT_BUS.register(factionsHandler);
+
+        MinecraftForge.EVENT_BUS.register(new DiscordListener());
     }
 
     @SubscribeEvent
@@ -91,52 +81,7 @@ public class AFMCoreMod {
     }
 
     // =========== DISCORD
-    @SubscribeEvent
-    public void onLoggedIn(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-        rpcTime = System.currentTimeMillis() / 1000L;
 
-        System.out.println("Changing Discord RPC status (ClientConnectedToServerEvent)");
-
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "", rpcTime));
-    }
-
-    @SubscribeEvent
-    public void onLoggedOut(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-        rpcTime = System.currentTimeMillis() / 1000L;
-
-        System.out.println("Changing Discord RPC status (ClientDisconnectedFromServerEvent)");
-
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", rpcTime));
-    }
-
-    @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) { // обновление Discord RPC каждые 5 сек, если игрок на сервере
-        Minecraft mc = Minecraft.getMinecraft();                // (для показа онлайна)
-
-        if (!gameLoadedSoundFlag) ticksFromStart++;
-
-        if (!gameLoadedSoundFlag && ticksFromStart > 60) {
-            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F));
-
-            gameLoadedSoundFlag = true;
-        }
-
-        if (mc.world == null || !mc.world.isRemote) {
-            return;
-        }
-
-//        if (rpcTick > 100) {
-//            rpcTick = 0;
-//        }
-
-        rpcTick = (rpcTick + 1) % 100;
-
-        if (rpcTick == 99 && mc.getConnection() != null) {
-            Collection<NetworkPlayerInfo> players = mc.getConnection().getPlayerInfoMap();
-
-            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + players.size() + " из " + mc.getConnection().currentServerMaxPlayers + ")", rpcTime));
-        }
-    }
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {

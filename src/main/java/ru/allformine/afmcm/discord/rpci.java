@@ -3,7 +3,6 @@ package ru.allformine.afmcm.discord;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
-import net.minecraft.client.Minecraft;
 import ru.allformine.afmcm.AFMCoreMod;
 import ru.allformine.afmcm.References;
 
@@ -27,7 +26,11 @@ public class rpci {
 
     public static void initDiscord() {
         DiscordRPC.discordRunCallbacks();
-        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(getNewState(playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L))).build();
+        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
+                .setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(
+                        getNewState(playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L)
+                ))
+                .build();
 
         DiscordRPC.discordInitialize(References.rpcAppId, handlers, true);
 
