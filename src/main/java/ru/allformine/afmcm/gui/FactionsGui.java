@@ -20,8 +20,8 @@ public class FactionsGui extends Gui {
 
     private void drawScreen() {
         ScaledResolution scaledResolution = event.getResolution();
-        int width = scaledResolution.getScaledWidth();
-        int height = scaledResolution.getScaledHeight();
+        float width = scaledResolution.getScaledWidth();
+        float height = scaledResolution.getScaledHeight();
 
         mc.fontRenderer.drawStringWithShadow(text, width / 2 + 93, height - this.mc.fontRenderer.FONT_HEIGHT - 2, 0xFFFFFF);
     }

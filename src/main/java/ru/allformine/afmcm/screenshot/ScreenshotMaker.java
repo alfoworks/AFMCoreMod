@@ -21,6 +21,7 @@ public class ScreenshotMaker {
     private static int[] pixelValues;
 
     public static byte[] getScreenshotByteArray(int displayWidth, int displayHeight, Framebuffer framebuffer, int imgType) {
+        // Я не знаю как это работает и знать не хочу.
         try {
             if (OpenGlHelper.isFramebufferEnabled()) {
                 displayWidth = framebuffer.framebufferTextureWidth;

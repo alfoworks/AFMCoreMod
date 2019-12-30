@@ -8,10 +8,11 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import ru.allformine.afmcm.References;
+import ru.allformine.afmcm.ModStatics;
 import ru.allformine.afmcm.screenshot.ScreenshotMaker;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class ScreenshotProxy {
 
@@ -36,34 +37,58 @@ public class ScreenshotProxy {
         }
 
         mc.addScheduledTask(() -> {
-            References.lastImage = ScreenshotMaker.getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), mode);
+            ModStatics.lastImage = ScreenshotMaker.getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer(), mode);
         });
 
-        try {
-            Thread.sleep(1500); // Очень больщой костыль из-за проблем с потоками. Возможно, подойдет
-        } catch (InterruptedException e) { //synchronized
-            e.printStackTrace();
-        }
-
-        if (References.lastImage != null) {
-            byte[][] chunkedImage = Util.splitArray(References.lastImage, 10240);
-
-            if (chunkedImage != null) {
-                for (byte[] chunk : chunkedImage) {
-                    ByteBuf buf = Unpooled.buffer(0);
-                    buf.writeBoolean(false);
-                    buf.writeBytes(chunk);
-
-                    PacketBuffer packetBuffer = new PacketBuffer(buf);
-                    CPacketCustomPayload packet = new CPacketCustomPayload("AN3234234A", packetBuffer);
-                    mc.player.connection.sendPacket(packet);
-                }
-
-                // Отправляем пустой массив, как конец скриншота.
-                ByteBuf lastBuf = Unpooled.buffer();
-                lastBuf.writeBoolean(true);
-                mc.player.connection.sendPacket(new CPacketCustomPayload("AN3234234A", new PacketBuffer(lastBuf)));
+        long time = System.currentTimeMillis();
+        while (ModStatics.lastImage == null) {
+            if (time > (System.currentTimeMillis() + 5000)) {
+                return;
             }
         }
+        
+        byte[][] chunkedImage = splitArray(ModStatics.lastImage);
+
+        if (chunkedImage != null) {
+            for (byte[] chunk : chunkedImage) {
+                ByteBuf buf = Unpooled.buffer(0);
+                buf.writeBoolean(false);
+                buf.writeBytes(chunk);
+
+                PacketBuffer packetBuffer = new PacketBuffer(buf);
+                CPacketCustomPayload packet = new CPacketCustomPayload("AN3234234A", packetBuffer);
+                mc.player.connection.sendPacket(packet);
+            }
+
+            // Отправляем пустой массив, как конец скриншота.
+            ByteBuf lastBuf = Unpooled.buffer();
+            lastBuf.writeBoolean(true);
+            mc.player.connection.sendPacket(new CPacketCustomPayload("AN3234234A", new PacketBuffer(lastBuf)));
+            
+            ModStatics.lastImage = null;
+        }
+    }
+    
+    // =============================== //
+
+    private static byte[][] splitArray(byte[] arrayToSplit) {
+        if (ModStatics.screenshotChunkSize <= 0) {
+            return null;
+        }
+
+        int rest = arrayToSplit.length % ModStatics.screenshotChunkSize;
+        int chunks = arrayToSplit.length / ModStatics.screenshotChunkSize + (rest > 0 ? 1 : 0);
+
+        byte[][] arrays = new byte[chunks][];
+
+        for (int i = 0; i < (rest > 0 ? chunks - 1 : chunks); i++) {
+            arrays[i] = Arrays.copyOfRange(arrayToSplit, i * ModStatics.screenshotChunkSize, i * ModStatics.screenshotChunkSize + ModStatics.screenshotChunkSize);
+        }
+
+        if (rest > 0) {
+            arrays[chunks - 1] = Arrays.copyOfRange(arrayToSplit, (chunks - 1) * ModStatics.screenshotChunkSize, (chunks - 1) * ModStatics.screenshotChunkSize + rest);
+        }
+
+        return arrays;
     }
 }

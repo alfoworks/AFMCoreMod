@@ -7,6 +7,7 @@ import java.util.List;
 
 public class KeyBinder {
     public static List<KeyBind> keyBinds = new ArrayList<>();
+
     public static void register(KeyBind keyBind){
         keyBinds.add(keyBind);
         ClientRegistry.registerKeyBinding(keyBind.getBinding());
