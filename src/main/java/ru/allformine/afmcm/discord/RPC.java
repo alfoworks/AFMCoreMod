@@ -27,7 +27,11 @@ public class RPC {
 
     public static void initDiscord() {
         DiscordRPC.discordRunCallbacks();
-        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(getNewState(playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L))).build();
+        final DiscordEventHandlers handlers = new DiscordEventHandlers.Builder()
+                .setReadyEventHandler(user -> DiscordRPC.discordUpdatePresence(
+                        getNewState(playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L)
+                ))
+                .build();
 
         DiscordRPC.discordInitialize(ModConfig.rpcAppId, handlers, true);
 
