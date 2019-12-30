@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.init.SoundEvents;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -21,13 +20,12 @@ import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
-import ru.allformine.afmcm.discord.rpci;
+import ru.allformine.afmcm.discord.RPC;
 import ru.allformine.afmcm.gui.FactionsGui;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
 import ru.allformine.afmcm.proxy.FactionsProxy;
-import ru.allformine.afmcm.listener.DiscordListener;
 import ru.allformine.afmcm.proxy.ScreenshotProxy;
 
 import java.io.File;
@@ -36,9 +34,6 @@ import java.util.Collection;
 @Mod(modid = "afmcm")
 public class AFMCoreMod {
     public static Logger logger;
-    public static Configuration config;
-    @SuppressWarnings("WeakerAccess")
-    public static FMLEventChannel channel;
 
     private static int rpcTick = 0;
     private static long rpcTime = 0;
@@ -52,12 +47,12 @@ public class AFMCoreMod {
 
         logger = event.getModLog();
 
-        config = new Configuration(new File("config", "AFMCoreMod.cfg"));
+        Configuration config = new Configuration(new File("config", "AFMCoreMod.cfg"));
         config.load();
 
-        References.rpcAppId = config.getString("rpcAppId", "discord", References.rpcAppId, "Secret stuff");
-        References.serverName = config.getString("serverName", "discord", References.serverName, "Secret stuff");
-        References.bigImageKey = config.getString("bigImageKey", "discord", References.bigImageKey, "Secret stuff");
+        ModConfig.rpcAppId = config.getString("rpcAppId", "discord", ModConfig.rpcAppId, "Secret stuff");
+        ModConfig.serverName = config.getString("serverName", "discord", ModConfig.serverName, "Secret stuff");
+        ModConfig.bigImageKey = config.getString("bigImageKey", "discord", ModConfig.bigImageKey, "Secret stuff");
 
         config.save();
     }
@@ -66,14 +61,13 @@ public class AFMCoreMod {
         KeyBinder.register(new CopyItemIdKey());
 
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
+        FMLEventChannel channel;
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A")).register(screenshotHandler);
         MinecraftForge.EVENT_BUS.register(screenshotHandler);
 
         FactionsProxy factionsHandler = new FactionsProxy();
         (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("factions")).register(factionsHandler);
         MinecraftForge.EVENT_BUS.register(factionsHandler);
-
-        MinecraftForge.EVENT_BUS.register(new DiscordListener());
     }
 
     @SubscribeEvent
@@ -87,10 +81,10 @@ public class AFMCoreMod {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        References.nickname = Minecraft.getMinecraft().getSession().getUsername();
+        ModStatics.playerNickname = Minecraft.getMinecraft().getSession().getUsername();
 
-        rpci.initDiscord();
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L));
+        RPC.initDiscord();
+        DiscordRPC.discordUpdatePresence(RPC.getNewState(RPC.playerState.STATE_IN_MENU, "", System.currentTimeMillis() / 1000L));
     }
 
     // =========== DISCORD
@@ -100,7 +94,7 @@ public class AFMCoreMod {
 
         System.out.println("Changing Discord RPC status (ClientConnectedToServerEvent)");
 
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "", rpcTime));
+        DiscordRPC.discordUpdatePresence(RPC.getNewState(RPC.playerState.STATE_ON_SERVER, "", rpcTime));
     }
 
     @SubscribeEvent
@@ -109,7 +103,7 @@ public class AFMCoreMod {
 
         System.out.println("Changing Discord RPC status (ClientDisconnectedFromServerEvent)");
 
-        DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_IN_MENU, "", rpcTime));
+        DiscordRPC.discordUpdatePresence(RPC.getNewState(RPC.playerState.STATE_IN_MENU, "", rpcTime));
     }
 
     @SubscribeEvent
@@ -137,13 +131,13 @@ public class AFMCoreMod {
         if (rpcTick == 99 && mc.getConnection() != null) {
             Collection<NetworkPlayerInfo> players = mc.getConnection().getPlayerInfoMap();
 
-            DiscordRPC.discordUpdatePresence(rpci.getNewState(rpci.playerState.STATE_ON_SERVER, "(" + players.size() + " из " + mc.getConnection().currentServerMaxPlayers + ")", rpcTime));
+            DiscordRPC.discordUpdatePresence(RPC.getNewState(RPC.playerState.STATE_ON_SERVER, " (" + players.size() + " из " + mc.getConnection().currentServerMaxPlayers + ")", rpcTime));
         }
     }
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
-        if (References.factionText.length() > 0)
-            new FactionsGui(References.factionText, Minecraft.getMinecraft(), event);
+        if (ModStatics.factionText.length() > 0)
+            new FactionsGui(ModStatics.factionText, Minecraft.getMinecraft(), event);
     }
 }
