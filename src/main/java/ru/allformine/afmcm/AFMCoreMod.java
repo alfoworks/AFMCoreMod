@@ -16,12 +16,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.RPC;
 import ru.allformine.afmcm.gui.FactionsGui;
+import ru.allformine.afmcm.handlers.DreamHudConfigEventHandler;
+import ru.allformine.afmcm.handlers.DreamHudRenderEventHandler;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
@@ -34,6 +35,7 @@ import java.util.Collection;
 @Mod(modid = "afmcm")
 public class AFMCoreMod {
     public static Logger logger;
+    public static Configuration config;
 
     private static int rpcTick = 0;
     private static long rpcTime = 0;
@@ -44,29 +46,32 @@ public class AFMCoreMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new DreamHudConfigEventHandler());
+        MinecraftForge.EVENT_BUS.register(new DreamHudRenderEventHandler());
 
         logger = event.getModLog();
 
-        Configuration config = new Configuration(new File("config", "AFMCoreMod.cfg"));
+        config = new Configuration(new File("config", "AFMCoreMod.cfg"));
         config.load();
 
         ModConfig.rpcAppId = config.getString("rpcAppId", "discord", ModConfig.rpcAppId, "Secret stuff");
         ModConfig.serverName = config.getString("serverName", "discord", ModConfig.serverName, "Secret stuff");
         ModConfig.bigImageKey = config.getString("bigImageKey", "discord", ModConfig.bigImageKey, "Secret stuff");
+        ModConfig.dreamHudEnabled = config.getBoolean("dreamHudEnabled", "dreamhud", ModConfig.dreamHudEnabled, "Noire");
 
         config.save();
     }
+
     @EventHandler
     public void init(FMLInitializationEvent event){
         KeyBinder.register(new CopyItemIdKey());
 
         ScreenshotProxy screenshotHandler = new ScreenshotProxy();
-        FMLEventChannel channel;
-        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A")).register(screenshotHandler);
+        NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A").register(screenshotHandler);
         MinecraftForge.EVENT_BUS.register(screenshotHandler);
 
         FactionsProxy factionsHandler = new FactionsProxy();
-        (channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("factions")).register(factionsHandler);
+        NetworkRegistry.INSTANCE.newEventDrivenChannel("factions").register(factionsHandler);
         MinecraftForge.EVENT_BUS.register(factionsHandler);
     }
 
