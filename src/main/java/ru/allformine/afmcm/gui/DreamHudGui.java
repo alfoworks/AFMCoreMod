@@ -26,7 +26,8 @@ public class DreamHudGui {
         int hungerY = 35;
 
         ScaledResolution scaledResolution = new ScaledResolution(mc);
-        int scaleFactor = scaledResolution.getScaleFactor();
+
+        GL11.glPushMatrix();
 
         // биндим файл с хуйней для худа
         mc.renderEngine.bindTexture(new ResourceLocation("afmcm", "textures/afmcm_textures.png"));
@@ -60,18 +61,12 @@ public class DreamHudGui {
         String nick = mc.getSession().getUsername();
         mc.fontRenderer.drawStringWithShadow(nick, offset + 52 + center(132, mc.fontRenderer.getStringWidth(nick)), offset + 10, 0xFFFFFF);
 
-        // Код рендера бошки
-        /*
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(50, 50, 100, 100);
-        //drawPlayer(offset + 100, offset + 8 + 200, 170, -4, 0, mc.player);
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        GL11.glPopMatrix();
-        */
+        // Рисуем бошку
 
-        GL11.glPushMatrix();
+        GL11.glPopMatrix();
+
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glPushMatrix();
         glScissor(offset + 9, 50, offset + 8, 44);
 
         drawPlayer(offset + 9 + 49, offset + 8 + 203, 122, -4, 0, mc.player);
@@ -79,6 +74,8 @@ public class DreamHudGui {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
         GL11.glPopMatrix();
+
+        GL11.glPushMatrix();
 
         //остальной уменьшенный текст
 
@@ -97,6 +94,8 @@ public class DreamHudGui {
         //Уровень опыта в худе
         String expLevelString = String.valueOf(mc.player.experienceLevel);
         mc.fontRenderer.drawStringWithShadow(expLevelString, offset + 2 + center(13, mc.fontRenderer.getStringWidth(expLevelString)), offset + 38, 0x56ffa6);
+
+        GL11.glPopMatrix();
     }
 
     private float center(int width, int length) {
