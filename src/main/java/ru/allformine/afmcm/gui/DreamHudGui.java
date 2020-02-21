@@ -2,6 +2,7 @@ package ru.allformine.afmcm.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -63,19 +64,12 @@ public class DreamHudGui {
 
         // Рисуем бошку
 
-        GL11.glPopMatrix();
-
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glPushMatrix();
         glScissor(offset + 9, 50, offset + 8, 44);
 
         drawPlayer(offset + 9 + 49, offset + 8 + 203, 122, -4, 0, mc.player);
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
-
-        GL11.glPopMatrix();
-
-        GL11.glPushMatrix();
 
         //остальной уменьшенный текст
 
@@ -138,10 +132,10 @@ public class DreamHudGui {
         player.rotationYawHead = f6;
         GL11.glPopMatrix();
         RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(32826);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GL11.glDisable(3553);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.disableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     private void glScissor(float x1, float x2, float y1, float y2) {
