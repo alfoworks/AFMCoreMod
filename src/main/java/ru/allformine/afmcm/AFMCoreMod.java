@@ -1,5 +1,6 @@
 package ru.allformine.afmcm;
 
+import io.netty.channel.ChannelPipeline;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -21,13 +22,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.RPC;
 import ru.allformine.afmcm.gui.FactionsGui;
-import ru.allformine.afmcm.handlers.DreamHudConfigEventHandler;
-import ru.allformine.afmcm.handlers.DreamHudRenderEventHandler;
+import ru.allformine.afmcm.handlers.event.DreamHudConfigEventHandler;
+import ru.allformine.afmcm.handlers.event.DreamHudRenderEventHandler;
+import ru.allformine.afmcm.handlers.packet.PacketHandler;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
 import ru.allformine.afmcm.proxy.FactionsProxy;
-import ru.allformine.afmcm.proxy.ScreenshotProxy;
 
 import java.io.File;
 import java.util.Collection;
@@ -42,6 +43,8 @@ public class AFMCoreMod {
 
     private long ticksFromStart = 0;
     private boolean gameLoadedSoundFlag = false;
+
+    private boolean added = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -65,10 +68,6 @@ public class AFMCoreMod {
     @EventHandler
     public void init(FMLInitializationEvent event){
         KeyBinder.register(new CopyItemIdKey());
-
-        ScreenshotProxy screenshotHandler = new ScreenshotProxy();
-        NetworkRegistry.INSTANCE.newEventDrivenChannel("AN3234234A").register(screenshotHandler);
-        MinecraftForge.EVENT_BUS.register(screenshotHandler);
 
         FactionsProxy factionsHandler = new FactionsProxy();
         NetworkRegistry.INSTANCE.newEventDrivenChannel("factions").register(factionsHandler);
@@ -121,6 +120,18 @@ public class AFMCoreMod {
             mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1.0F));
 
             gameLoadedSoundFlag = true;
+        }
+
+        if (mc.getConnection() != null) {
+            ChannelPipeline pipe = mc.getConnection().getNetworkManager().channel().pipeline();
+
+            if (!added) {
+                pipe.addBefore("packet_handler", "PacketHandler", new PacketHandler());
+
+                added = true;
+            }
+        } else if (added) {
+            added = false;
         }
 
         if (mc.world == null || !mc.world.isRemote) {

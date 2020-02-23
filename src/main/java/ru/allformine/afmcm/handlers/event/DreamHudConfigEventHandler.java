@@ -1,4 +1,4 @@
-package ru.allformine.afmcm.handlers;
+package ru.allformine.afmcm.handlers.event;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptions;

@@ -1,4 +1,4 @@
-package ru.allformine.afmcm.handlers;
+package ru.allformine.afmcm.handlers.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.GuiIngameForge;

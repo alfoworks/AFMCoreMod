@@ -1,5 +1,6 @@
 package ru.allformine.afmcm.screenshot;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.shader.Framebuffer;
@@ -16,11 +17,24 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 
 @SideOnly(Side.CLIENT)
-public class ScreenshotMaker {
+public class ScreenshotMaker implements Runnable {
     private static IntBuffer pixelBuffer;
     private static int[] pixelValues;
+    private static int imgType;
 
-    public static byte[] getScreenshotByteArray(int displayWidth, int displayHeight, Framebuffer framebuffer, int imgType) {
+    public byte[] scr = new byte[]{};
+
+    public ScreenshotMaker(int quality) {
+        if (quality != 1 && quality == 2) {
+            imgType = BufferedImage.TYPE_USHORT_555_RGB;
+        } else if (quality != 1 && quality == 3) {
+            imgType = BufferedImage.TYPE_USHORT_GRAY;
+        } else {
+            imgType = quality;
+        }
+    }
+
+    private static byte[] getScreenshotByteArray(int displayWidth, int displayHeight, Framebuffer framebuffer) {
         // Я не знаю как это работает и знать не хочу.
         try {
             if (OpenGlHelper.isFramebufferEnabled()) {
@@ -67,7 +81,7 @@ public class ScreenshotMaker {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             try {
-                ImageIO.write(bufferedimage, "png", out);
+                ImageIO.write(bufferedimage, "jpg", out);
                 return out.toByteArray();
             } catch (IOException e) {
                 return null;
@@ -76,5 +90,14 @@ public class ScreenshotMaker {
             exception.printStackTrace();
             return null;
         }
+    }
+
+    // ===================================== //
+
+    @Override
+    public void run() {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        scr = getScreenshotByteArray(mc.displayWidth, mc.displayHeight, mc.getFramebuffer());
     }
 }
