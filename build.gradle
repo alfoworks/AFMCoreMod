@@ -40,6 +40,22 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+jar {
+    archiveName "afmcm.jar"
+    baseName = 'afmcm'
+    version =  version
+}
+
+task copyForShared(type: Copy){
+    from jar
+    into 'build/libs/'
+    rename { String fileName ->
+        // a simple way is to remove the "-$version" from the jar filename
+        // but you can customize the filename replacement rule as you wish.
+        fileName.replace("-$project.version", "")
+    }
+}
+
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
