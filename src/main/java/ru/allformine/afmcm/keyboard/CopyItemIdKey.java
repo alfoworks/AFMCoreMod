@@ -2,11 +2,11 @@ package ru.allformine.afmcm.keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 import ru.allformine.afmcm.ModStatics;
@@ -17,7 +17,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
 public class CopyItemIdKey implements KeyBind {
-    private static KeyBinding keyBinding = new KeyBinding("Скопировать ID предмета в руке", Keyboard.KEY_COMMA, ModStatics.category);
+    private static KeyBinding keyBinding = new KeyBinding(I18n.format("afmcm.key.copyitemid"), Keyboard.KEY_COMMA, ModStatics.category);
 
     @Override
     public void onPress(InputEvent.KeyInputEvent event) {
@@ -32,7 +32,7 @@ public class CopyItemIdKey implements KeyBind {
 
         if(registryName == null) {
 
-            ModUtils.sendErrorMessage(player, "Не удалось скопировать ID предмета!");
+            ModUtils.sendErrorMessage(player, I18n.format("afmcm.text.errorcopy"));
             return;
         }
 
@@ -47,7 +47,7 @@ public class CopyItemIdKey implements KeyBind {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(selection, selection);
 
-        ModUtils.sendStyledMessage(player, String.format("Предмет \"%s\" скопирован!", name));
+        ModUtils.sendStyledMessage(player, I18n.format("afmcm.text.okcopy", name));
     }
 
     @Override

@@ -7,8 +7,10 @@
   "mcversion": "1.12.2",
   "url": "",
   "updateUrl": "",
-  "authorList": ["Iterator"],
-  "credits": "AllForMine Servers",
+  "authorList": [
+    "Iterator"
+  ],
+  "credits": "ALFO:MINE Servers",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
