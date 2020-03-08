@@ -24,6 +24,7 @@ import ru.allformine.afmcm.discord.RPC;
 import ru.allformine.afmcm.gui.FactionsGui;
 import ru.allformine.afmcm.handlers.event.DreamHudConfigEventHandler;
 import ru.allformine.afmcm.handlers.event.DreamHudRenderEventHandler;
+import ru.allformine.afmcm.handlers.event.MPScreenEventHandler;
 import ru.allformine.afmcm.handlers.packet.PacketHandler;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
@@ -51,6 +52,7 @@ public class AFMCoreMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new DreamHudConfigEventHandler());
         MinecraftForge.EVENT_BUS.register(new DreamHudRenderEventHandler());
+        MinecraftForge.EVENT_BUS.register(new MPScreenEventHandler());
 
         logger = event.getModLog();
 

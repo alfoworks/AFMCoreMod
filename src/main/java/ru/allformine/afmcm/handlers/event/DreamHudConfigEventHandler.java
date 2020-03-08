@@ -13,7 +13,16 @@ public class DreamHudConfigEventHandler {
     public void onGuiScreenInit(GuiScreenEvent.InitGuiEvent event) {
         if (!(event.getGui() instanceof GuiOptions)) return;
 
-        event.getButtonList().add(new GuiButton(1488, 0, 0, 130, 20, getButtonText()));
+        int buttonY = 0;
+
+        for (GuiButton button : event.getButtonList()) {
+            if (button.x == 0 && button.y == 0) {
+                buttonY = button.height;
+                break;
+            }
+        }
+
+        event.getButtonList().add(new GuiButton(1488, 0, buttonY, 130, 20, getButtonText()));
     }
 
     @SubscribeEvent
