@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
+import ru.allformine.afmcm.ModUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +28,14 @@ public class MPScreenEventHandler {
 
                 event.getButtonList().add(guiButton);
             } else if (guiButton.id == 8) {
-                GuiButton button = getButtonById(event.getButtonList(), 1);
+                GuiButton button = ModUtils.getButtonById(event.getButtonList(), 1);
 
                 guiButton.x = button.x;
                 guiButton.width = button.width / 2;
 
                 event.getButtonList().add(guiButton);
             } else if (guiButton.id == 0) {
-                GuiButton button = getButtonById(event.getButtonList(), 1);
+                GuiButton button = ModUtils.getButtonById(event.getButtonList(), 1);
 
                 guiButton.width = button.width / 2;
                 guiButton.x = (button.x + button.width) - guiButton.width;
@@ -42,13 +43,5 @@ public class MPScreenEventHandler {
                 event.getButtonList().add(guiButton);
             }
         });
-    }
-
-    private GuiButton getButtonById(List<GuiButton> buttons, int id) {
-        for (GuiButton button : buttons) {
-            if (button.id == id) return button;
-        }
-
-        return buttons.get(0);
     }
 }

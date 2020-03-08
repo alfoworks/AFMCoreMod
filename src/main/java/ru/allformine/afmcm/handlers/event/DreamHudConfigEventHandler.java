@@ -7,22 +7,21 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.allformine.afmcm.AFMCoreMod;
 import ru.allformine.afmcm.ModConfig;
+import ru.allformine.afmcm.ModUtils;
 
 public class DreamHudConfigEventHandler {
     @SubscribeEvent
-    public void onGuiScreenInit(GuiScreenEvent.InitGuiEvent event) {
+    public void onGuiScreenInit(GuiScreenEvent.InitGuiEvent.Post event) {
         if (!(event.getGui() instanceof GuiOptions)) return;
 
-        int buttonY = 0;
+        GuiButton bindedButton = ModUtils.getButtonById(event.getButtonList(), 110);
 
-        for (GuiButton button : event.getButtonList()) {
-            if (button.x == 0 && button.y == 0) {
-                buttonY = button.height;
-                break;
-            }
-        }
+        int buttonWidth = 150;
+        int buttonHeight = 20;
+        int buttonX = bindedButton.x;
+        int buttonY = bindedButton.y - buttonHeight - 4;
 
-        event.getButtonList().add(new GuiButton(1488, 0, buttonY, 130, 20, getButtonText()));
+        event.getButtonList().add(new GuiButton(1488, buttonX, buttonY, buttonWidth, buttonHeight, getButtonText()));
     }
 
     @SubscribeEvent
