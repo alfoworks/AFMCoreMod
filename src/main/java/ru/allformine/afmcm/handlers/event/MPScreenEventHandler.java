@@ -1,6 +1,5 @@
 package ru.allformine.afmcm.handlers.event;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -9,11 +8,8 @@ import org.lwjgl.input.Keyboard;
 import ru.allformine.afmcm.ModUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MPScreenEventHandler {
-    List<Integer> buttonIds = Lists.newArrayList(1, 8, 0);
-
     @SubscribeEvent
     public void onGuiScreenInit(GuiScreenEvent.InitGuiEvent event) {
         if (!(event.getGui() instanceof GuiMultiplayer)) return;

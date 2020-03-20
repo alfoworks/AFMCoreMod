@@ -27,9 +27,11 @@ import ru.allformine.afmcm.handlers.event.DreamHudRenderEventHandler;
 import ru.allformine.afmcm.handlers.event.MPScreenEventHandler;
 import ru.allformine.afmcm.handlers.packet.PacketHandler;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
+import ru.allformine.afmcm.keyboard.DebugKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
-import ru.allformine.afmcm.proxy.FactionsProxy;
+import ru.allformine.afmcm.proxy.FactionPacketListener;
+import ru.allformine.afmcm.proxy.MessagingPacketListener;
 
 import java.io.File;
 import java.util.Collection;
@@ -68,18 +70,23 @@ public class AFMCoreMod {
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event){
+    public void init(FMLInitializationEvent event) {
         KeyBinder.register(new CopyItemIdKey());
+        KeyBinder.register(new DebugKey());
 
-        FactionsProxy factionsHandler = new FactionsProxy();
-        NetworkRegistry.INSTANCE.newEventDrivenChannel("factions").register(factionsHandler);
-        MinecraftForge.EVENT_BUS.register(factionsHandler);
+        FactionPacketListener factionPacketListener = new FactionPacketListener();
+        NetworkRegistry.INSTANCE.newEventDrivenChannel("factions").register(factionPacketListener);
+        MinecraftForge.EVENT_BUS.register(factionPacketListener);
+
+        MessagingPacketListener messagingPacketListener = new MessagingPacketListener();
+        NetworkRegistry.INSTANCE.newEventDrivenChannel("afmmessaging").register(messagingPacketListener);
+        MinecraftForge.EVENT_BUS.register(messagingPacketListener);
     }
 
     @SubscribeEvent
-    public void onKeyInputEvent(InputEvent.KeyInputEvent event){
-        for (KeyBind keyBind: KeyBinder.keyBinds){
-            if(keyBind.getBinding().isPressed()){
+    public void onKeyInputEvent(InputEvent.KeyInputEvent event) {
+        for (KeyBind keyBind : KeyBinder.keyBinds) {
+            if (keyBind.getBinding().isPressed()) {
                 keyBind.onPress(event);
             }
         }
