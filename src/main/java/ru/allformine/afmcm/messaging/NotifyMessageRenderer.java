@@ -3,6 +3,10 @@ package ru.allformine.afmcm.messaging;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -13,11 +17,14 @@ import java.util.regex.Pattern;
 public class NotifyMessageRenderer extends Gui {
     private static String message = null;
     private static long renderTime;
-    private double cycle = ((double) (System.nanoTime() / 1000) % 0x200000) / (double) 0x200000;
+    private static int initialHeight = 1;
 
     public static void setMessage(String messageToSet) {
         message = messageToSet;
         renderTime = System.currentTimeMillis() + 5000;
+
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.player.playSound(new SoundEvent(new ResourceLocation("afmcm", "notify")), mc.gameSettings.getSoundLevel(SoundCategory.MASTER), 1.0F);
     }
 
     private static int clamp(final int min, final int max, final int value) {
@@ -54,18 +61,23 @@ public class NotifyMessageRenderer extends Gui {
 
         ScaledResolution scaledResolution = event.getResolution();
         int width = scaledResolution.getScaledWidth();
+        double cycle = ((double) (System.nanoTime() / 1000) % 0x200000) / (double) 0x200000;
         int titleAlpha = 160 + (int) (85.0D * Math.sin(cycle * 2 * Math.PI));
         Minecraft mc = Minecraft.getMinecraft();
-
-        drawCenteredString(mc.fontRenderer, "Notification", width / 2, 41, colorARGBtoInt(titleAlpha, 255, 0, 0));
+        drawCenteredString(mc.fontRenderer, I18n.format("afmcm.text.notification"), width / 2, initialHeight, colorARGBtoInt(titleAlpha, 255, 0, 0));
 
         for (int i = 0; i < messageList.size(); i++) {
-            int textY = 50 + i * mc.fontRenderer.FONT_HEIGHT;
+            int textY = initialHeight + mc.fontRenderer.FONT_HEIGHT + i * mc.fontRenderer.FONT_HEIGHT;
             drawCenteredString(mc.fontRenderer, messageList.get(i), width / 2, textY, 0xFFFFFF);
+        }
+
+        if (initialHeight < 41) {
+            initialHeight++;
         }
 
         if (System.currentTimeMillis() > renderTime) {
             message = null;
+            initialHeight = 1;
         }
     }
 }

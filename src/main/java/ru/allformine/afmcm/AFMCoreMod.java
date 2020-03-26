@@ -22,16 +22,12 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.RPC;
 import ru.allformine.afmcm.gui.FactionsGui;
-import ru.allformine.afmcm.handlers.event.DreamHudConfigEventHandler;
-import ru.allformine.afmcm.handlers.event.DreamHudRenderEventHandler;
-import ru.allformine.afmcm.handlers.event.MPScreenEventHandler;
+import ru.allformine.afmcm.handlers.event.*;
 import ru.allformine.afmcm.handlers.packet.PacketHandler;
 import ru.allformine.afmcm.keyboard.CopyItemIdKey;
-import ru.allformine.afmcm.keyboard.DebugKey;
 import ru.allformine.afmcm.keyboard.KeyBind;
 import ru.allformine.afmcm.keyboard.KeyBinder;
-import ru.allformine.afmcm.proxy.FactionPacketListener;
-import ru.allformine.afmcm.proxy.MessagingPacketListener;
+import ru.allformine.afmcm.messaging.NotifyMessageRenderer;
 
 import java.io.File;
 import java.util.Collection;
@@ -55,6 +51,7 @@ public class AFMCoreMod {
         MinecraftForge.EVENT_BUS.register(new DreamHudConfigEventHandler());
         MinecraftForge.EVENT_BUS.register(new DreamHudRenderEventHandler());
         MinecraftForge.EVENT_BUS.register(new MPScreenEventHandler());
+        MinecraftForge.EVENT_BUS.register(new NotifyMessageRenderer());
 
         logger = event.getModLog();
 
@@ -72,15 +69,15 @@ public class AFMCoreMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         KeyBinder.register(new CopyItemIdKey());
-        KeyBinder.register(new DebugKey());
+        KeyBinder.register(new ru.allformine.afmcm.keyboard.DebugKey());
 
-        FactionPacketListener factionPacketListener = new FactionPacketListener();
-        NetworkRegistry.INSTANCE.newEventDrivenChannel("factions").register(factionPacketListener);
-        MinecraftForge.EVENT_BUS.register(factionPacketListener);
+        FactionPacketHandler factionPacketHandler = new FactionPacketHandler();
+        NetworkRegistry.INSTANCE.newEventDrivenChannel("factions").register(factionPacketHandler);
+        MinecraftForge.EVENT_BUS.register(factionPacketHandler);
 
-        MessagingPacketListener messagingPacketListener = new MessagingPacketListener();
-        NetworkRegistry.INSTANCE.newEventDrivenChannel("afmmessaging").register(messagingPacketListener);
-        MinecraftForge.EVENT_BUS.register(messagingPacketListener);
+        MessagingPacketHandler messagingPacketHandler = new MessagingPacketHandler();
+        NetworkRegistry.INSTANCE.newEventDrivenChannel("afmmessaging").register(messagingPacketHandler);
+        MinecraftForge.EVENT_BUS.register(messagingPacketHandler);
     }
 
     @SubscribeEvent

@@ -1,4 +1,4 @@
-package ru.allformine.afmcm.proxy;
+package ru.allformine.afmcm.handlers.event;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import ru.allformine.afmcm.messaging.MessageDispatcher;
 import ru.allformine.afmcm.messaging.MessageType;
 
-public class MessagingPacketListener {
+public class MessagingPacketHandler {
     @SubscribeEvent
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         ByteBuf buf = event.getPacket().payload();
