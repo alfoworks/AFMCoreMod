@@ -14,21 +14,9 @@ public class MessagingPacketHandler {
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         ByteBuf buf = event.getPacket().payload();
 
-        int messageTypeInt = buf.getInt(0);
         String messageText = ByteBufUtils.readUTF8String(buf);
 
-        MessageType messageType;
-
-        switch (messageTypeInt) {
-            case 0:
-                messageType = MessageType.NOTIFY_MESSAGE;
-                break;
-            case 1:
-                messageType = MessageType.WINDOWED_MESSAGE;
-                break;
-            default:
-                return;
-        }
+        MessageType messageType = buf.readBoolean() ? MessageType.WINDOWED_MESSAGE : MessageType.NOTIFY_MESSAGE;
 
         Minecraft.getMinecraft().player.sendMessage(new TextComponentString(messageText));
 
