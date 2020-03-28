@@ -5,11 +5,14 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ru.allformine.afmcm.AFMCoreMod;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,18 +69,24 @@ public class NotifyMessageRenderer extends Gui {
         Minecraft mc = Minecraft.getMinecraft();
         drawCenteredString(mc.fontRenderer, I18n.format("afmcm.text.notification"), width / 2, initialHeight, colorARGBtoInt(titleAlpha, 255, 0, 0));
 
+        mc.player.sendMessage(new TextComponentString(message));
+        mc.player.sendMessage(new TextComponentString(Arrays.toString(messageList.toArray())));
+
         for (int i = 0; i < messageList.size(); i++) {
             int textY = initialHeight + mc.fontRenderer.FONT_HEIGHT + i * mc.fontRenderer.FONT_HEIGHT;
             drawCenteredString(mc.fontRenderer, messageList.get(i), width / 2, textY, 0xFFFFFF);
         }
 
-        if (initialHeight < 41) {
-            initialHeight++;
-        }
-
         if (System.currentTimeMillis() > renderTime) {
             message = null;
             initialHeight = 1;
+        }
+    }
+
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent.Phase event) {
+        if (message != null && initialHeight < 41) {
+            initialHeight++;
         }
     }
 }

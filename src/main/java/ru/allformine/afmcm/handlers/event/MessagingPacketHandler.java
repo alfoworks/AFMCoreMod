@@ -21,8 +21,6 @@ public class MessagingPacketHandler {
             messageType = MessageType.WINDOWED_MESSAGE;
         }
 
-        System.out.println(messageText);
-
         MessageDispatcher.displayMessage(messageType, messageText);
     }
 }
