@@ -6,6 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Logger;
 import ru.allformine.afmcm.discord.RPC;
 import ru.allformine.afmcm.gui.FactionsGui;
@@ -44,6 +47,8 @@ public class AFMCoreMod {
     private boolean gameLoadedSoundFlag = false;
 
     private boolean added = false;
+
+    public static SoundEvent NOTIFY_SOUND_EVENT;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -78,6 +83,12 @@ public class AFMCoreMod {
         MessagingPacketHandler messagingPacketHandler = new MessagingPacketHandler();
         NetworkRegistry.INSTANCE.newEventDrivenChannel("afmmessaging").register(messagingPacketHandler);
         MinecraftForge.EVENT_BUS.register(messagingPacketHandler);
+
+        ResourceLocation loc = new ResourceLocation("afmcm", "notify");
+        SoundEvent soundEvent = new SoundEvent(loc);
+        soundEvent.setRegistryName("notify");
+        ForgeRegistries.SOUND_EVENTS.register(soundEvent);
+        NOTIFY_SOUND_EVENT = soundEvent;
     }
 
     @SubscribeEvent

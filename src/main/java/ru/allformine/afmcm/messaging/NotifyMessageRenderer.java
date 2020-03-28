@@ -4,11 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.allformine.afmcm.AFMCoreMod;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -22,9 +21,10 @@ public class NotifyMessageRenderer extends Gui {
     public static void setMessage(String messageToSet) {
         message = messageToSet;
         renderTime = System.currentTimeMillis() + 5000;
+        initialHeight = 1;
 
         Minecraft mc = Minecraft.getMinecraft();
-        mc.player.playSound(new SoundEvent(new ResourceLocation("afmcm", "notify")), mc.gameSettings.getSoundLevel(SoundCategory.MASTER), 1.0F);
+        mc.player.playSound(AFMCoreMod.NOTIFY_SOUND_EVENT, mc.gameSettings.getSoundLevel(SoundCategory.VOICE), 1.0F);
     }
 
     private static int clamp(final int min, final int max, final int value) {
