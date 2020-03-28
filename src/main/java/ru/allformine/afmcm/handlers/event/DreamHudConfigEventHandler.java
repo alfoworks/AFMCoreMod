@@ -19,7 +19,7 @@ public class DreamHudConfigEventHandler {
         int buttonWidth = 150;
         int buttonHeight = 20;
         int buttonX = bindedButton.x;
-        int buttonY = bindedButton.y - buttonHeight - 3;
+        int buttonY = bindedButton.y - buttonHeight - 5;
 
         event.getButtonList().add(new GuiButton(1488, buttonX, buttonY, buttonWidth, buttonHeight, getButtonText()));
     }

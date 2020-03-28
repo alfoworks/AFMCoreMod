@@ -19,6 +19,10 @@ public class DebugKey implements KeyBind {
             MessageDispatcher.displayMessage(MessageType.NOTIFY_MESSAGE, "Test test test test test test test test 123");
 
             return;
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+            MessageDispatcher.displayMessage(MessageType.WINDOWED_MESSAGE, "Windowed message test!");
+
+            return;
         }
 
         Minecraft.getMinecraft().displayGuiScreen(new DebugGui());

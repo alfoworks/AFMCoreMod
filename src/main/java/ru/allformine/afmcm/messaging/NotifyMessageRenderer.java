@@ -84,7 +84,7 @@ public class NotifyMessageRenderer extends Gui {
     }
 
     @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent.Phase event) {
+    public void onTick(TickEvent.ClientTickEvent event) {
         if (message != null && initialHeight < 41) {
             initialHeight++;
         }

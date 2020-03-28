@@ -1,5 +1,7 @@
 package ru.allformine.afmcm.messaging;
 
+import net.minecraft.client.Minecraft;
+
 public class MessageDispatcher {
     static NotifyMessageRenderer notifyRenderer = new NotifyMessageRenderer();
 
@@ -7,7 +9,7 @@ public class MessageDispatcher {
         if (type == MessageType.NOTIFY_MESSAGE) {
             NotifyMessageRenderer.setMessage(message);
         } else {
-            // todo window logic
+            Minecraft.getMinecraft().displayGuiScreen(new WindowedMessageGuiScreen());
         }
     }
 }
