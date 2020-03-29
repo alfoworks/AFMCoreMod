@@ -20,7 +20,7 @@ public class DebugKey implements KeyBind {
 
             return;
         } else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-            MessageDispatcher.displayMessage(MessageType.WINDOWED_MESSAGE, "Windowed message test!");
+            MessageDispatcher.displayMessage(MessageType.WINDOWED_MESSAGE, "Welcome. Welcome to City 17. Anus anus anus anus anus anus anus anus");
 
             return;
         }

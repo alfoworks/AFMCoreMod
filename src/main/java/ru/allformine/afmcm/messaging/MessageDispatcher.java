@@ -9,7 +9,7 @@ public class MessageDispatcher {
         if (type == MessageType.NOTIFY_MESSAGE) {
             NotifyMessageRenderer.setMessage(message);
         } else {
-            Minecraft.getMinecraft().displayGuiScreen(new WindowedMessageGuiScreen());
+            Minecraft.getMinecraft().displayGuiScreen(new WindowedMessageGuiScreen(message));
         }
     }
 }
