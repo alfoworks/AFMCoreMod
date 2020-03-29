@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class WindowedMessageGuiScreen extends GuiScreen {
     @Override
@@ -21,15 +22,17 @@ public class WindowedMessageGuiScreen extends GuiScreen {
         int buttonWidth = 40;
         int buttonHeight = 20;
 
-        int buttonPosX = posX - buttonWidth - 5;
-        int buttonPosY = posY - buttonHeight - 5;
+        int buttonPosX = posX + windowWidth - buttonWidth - 5;
+        int buttonPosY = posY + windowHeight - buttonHeight - 5;
 
-        this.buttonList.add(new GuiButton(buttonPosX, buttonPosY, buttonWidth, "Close"));
+        this.buttonList.add(new GuiButton(1, buttonPosX, buttonPosY, buttonWidth, buttonHeight, "OK"));
     }
 
     @Override
     public void drawScreen(int p_drawScreen_1_, int p_drawScreen_2_, float p_drawScreen_3_) {
         this.drawDefaultBackground();
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         mc.renderEngine.bindTexture(new ResourceLocation("afmcm", "textures/windowed_message.png"));
 
@@ -40,9 +43,9 @@ public class WindowedMessageGuiScreen extends GuiScreen {
         int posX = center(windowWidth, resolution.getScaledWidth());
         int posY = center(windowHeight, resolution.getScaledHeight());
 
-        mc.ingameGUI.drawTexturedModalRect(posX, posY, 0, 0, windowWidth, windowHeight);
+        drawTexturedModalRect(posX, posY, 0, 0, windowWidth, windowHeight);
 
-        drawString(mc.fontRenderer, I18n.format("afmcm.text.message"), posX + 7, posY + 3, 0xFFFFFF);
+        drawString(mc.fontRenderer, I18n.format("afmcm.text.message"), posX + 7, posY + 5, 0xFFFFFF);
 
         super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
     }
