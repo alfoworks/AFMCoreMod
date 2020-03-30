@@ -16,11 +16,11 @@ public class DebugKey implements KeyBind {
     @Override
     public void onPress(InputEvent.KeyInputEvent event) {
         if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-            MessageDispatcher.displayMessage(MessageType.NOTIFY_MESSAGE, "Test test test test test test test test 123");
+            MessageDispatcher.displayMessage(MessageType.NOTIFY_MESSAGE, "Nothing to look at here. Stop.");
 
             return;
         } else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
-            MessageDispatcher.displayMessage(MessageType.WINDOWED_MESSAGE, "Welcome. Welcome to City 17. Anus anus anus anus anus anus anus anus");
+            MessageDispatcher.displayMessage(MessageType.WINDOWED_MESSAGE, "Anal sex or anal intercourse is generally the insertion and thrusting of the erect penis into a person's anus, or anus and rectum, for sexual pleasure.[1][2][3] Other forms of anal sex include fingering, the use of sex toys for anal penetration, oral sex performed on the anus (anilingus), and pegging.");
 
             return;
         }
