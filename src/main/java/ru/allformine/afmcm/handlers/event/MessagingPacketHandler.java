@@ -6,12 +6,14 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import ru.allformine.afmcm.messaging.MessageDispatcher;
 import ru.allformine.afmcm.messaging.MessageType;
 
+import java.nio.charset.StandardCharsets;
+
 public class MessagingPacketHandler {
     @SubscribeEvent
     public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
         PacketBuffer buffer = new PacketBuffer(event.getPacket().payload());
 
-        String messageText = new String(buffer.readByteArray());
+        String messageText = new String(buffer.readByteArray(), StandardCharsets.UTF_8);
 
         MessageType messageType;
 
