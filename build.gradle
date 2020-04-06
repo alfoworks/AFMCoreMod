@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -41,7 +42,7 @@ minecraft {
 }
 
 jar {
-    archiveName "afmcm.jar"
+    archiveName "afmcm-no-obf.jar"
     baseName = 'afmcm'
     version =  version
 }
@@ -55,6 +56,22 @@ task copyForShared(type: Copy){
         fileName.replace("-$project.version", "")
     }
 }
+
+task proguard(type: proguard.gradle.ProGuardTask) {
+    configuration 'proguard.txt'
+
+    injars 'build/libs/afmcm-no-obf.jar'
+    outjars 'build/libs/afmcm.jar'
+}
+
+task obfuscate() {
+    doLast {
+        println "[ALFO] Obfuscating mod..."
+    }
+}
+
+build.finalizedBy obfuscate
+obfuscate.finalizedBy proguard
 
 dependencies {
     // you may put jars on which you depend on in ./libs
