@@ -20,6 +20,10 @@
     java.lang.Class class$(java.lang.String, boolean);
 }
 
+-keepclassmembers public class ru.allformine.afmcm.handlers.packet.PacketHandler {
+    public protected <methods>;
+}
+
 -keepclasseswithmembernames class * {
     native <methods>;
 }
