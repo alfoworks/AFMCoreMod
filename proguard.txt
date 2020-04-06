@@ -8,6 +8,7 @@
 -keepattributes SourceFile, LineNumberTable
 -dontwarn **
 -dontshrink
+-keepattributes *Annotation*
 
 -keep public class ru.allformine.afmcm.AFMCoreMod {
     public protected *;
