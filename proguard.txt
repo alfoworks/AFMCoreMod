@@ -3,7 +3,8 @@
 
 # Output a source map file
 -printmapping proguard.map
--optimizationpasses 5
+-optimizationpasses 1
+-dontoptimize
 # Keep filenames and line numbers
 -keepattributes SourceFile, LineNumberTable
 -dontwarn **
