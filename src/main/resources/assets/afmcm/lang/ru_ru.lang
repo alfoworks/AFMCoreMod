@@ -3,4 +3,4 @@ afmcm.key.debugmode=Дебаг-режим
 afmcm.text.errorcopy=Не удалось скопировать ID предмета!
 afmcm.text.okcopy=Предмет %s скопирован!
 afmcm.text.notification=Уведомление
-afmcm.text.message="Сообщение"
+afmcm.text.message=Сообщение

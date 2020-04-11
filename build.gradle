@@ -58,7 +58,7 @@ task copyForShared(type: Copy){
 }
 
 task proguard(type: proguard.gradle.ProGuardTask) {
-    configuration 'proguard.txt'
+    configuration 'proguard.pro'
 
     injars 'build/libs/afmcm-no-obf.jar'
     outjars 'build/libs/afmcm.jar'

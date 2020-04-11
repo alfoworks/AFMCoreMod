@@ -20,7 +20,7 @@
     java.lang.Class class$(java.lang.String, boolean);
 }
 
--keepclassmembers public class ru.allformine.afmcm.handlers.packet.PacketHandler {
+-keepclassmembers public class ru.allformine.afmcm.handlers.packet.PacketHandler, ru.allformine.afmcm.gui.DebugGui, ru.allformine.afmcm.messaging.WindowedMessageGuiScreen {
     public protected <methods>;
 }
 
