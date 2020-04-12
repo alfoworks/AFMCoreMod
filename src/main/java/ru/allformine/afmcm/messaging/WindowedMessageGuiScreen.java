@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -35,6 +36,13 @@ public class WindowedMessageGuiScreen extends GuiScreen {
         int buttonPosY = posY + windowHeight - buttonHeight - 2;
 
         this.buttonList.add(new GuiButton(1, buttonPosX, buttonPosY, buttonWidth, buttonHeight, "OK"));
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode == Keyboard.KEY_ESCAPE) return; // Запрещает закрывать окно кнопкой ESC (потому что блять)
+
+        super.keyTyped(typedChar, keyCode);
     }
 
     @Override
