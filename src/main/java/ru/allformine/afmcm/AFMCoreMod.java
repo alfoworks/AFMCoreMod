@@ -8,6 +8,7 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -143,7 +144,11 @@ public class AFMCoreMod {
             ChannelPipeline pipe = mc.getConnection().getNetworkManager().channel().pipeline();
 
             if (!added) {
-                pipe.addBefore("packet_handler", "PacketHandler", new PacketHandler());
+                try {
+                    pipe.addBefore("packet_handler", "PacketHandler", new PacketHandler());
+                } catch (Exception e) {
+                    mc.getConnection().onDisconnect(new TextComponentTranslation("afmcm.text.failedtoconnect"));
+                }
 
                 added = true;
             }

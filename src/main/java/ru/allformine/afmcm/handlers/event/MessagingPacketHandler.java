@@ -1,5 +1,6 @@
 package ru.allformine.afmcm.handlers.event;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -23,6 +24,8 @@ public class MessagingPacketHandler {
             messageType = MessageType.WINDOWED_MESSAGE;
         }
 
-        MessageDispatcher.displayMessage(messageType, messageText);
+        Minecraft.getMinecraft().addScheduledTask(() -> {
+            MessageDispatcher.displayMessage(messageType, messageText);
+        });
     }
 }

@@ -4,3 +4,4 @@ afmcm.text.errorcopy=Failed to copy item ID!
 afmcm.text.okcopy=Item %s has been copied!
 afmcm.text.notification=Notification
 afmcm.text.message=Message
+afmcm.text.failedtoconnect=Failed to connect. Try again.
