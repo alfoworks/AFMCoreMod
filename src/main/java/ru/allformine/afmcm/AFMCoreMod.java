@@ -58,6 +58,7 @@ public class AFMCoreMod {
         MinecraftForge.EVENT_BUS.register(new DreamHudRenderEventHandler());
         MinecraftForge.EVENT_BUS.register(new MPScreenEventHandler());
         MinecraftForge.EVENT_BUS.register(new NotifyMessageRenderer());
+        MinecraftForge.EVENT_BUS.register(new FactionsGui());
 
         logger = event.getModLog();
 
@@ -171,11 +172,5 @@ public class AFMCoreMod {
 
             DiscordRPC.discordUpdatePresence(RPC.getNewState(RPC.playerState.STATE_ON_SERVER, " (" + players.size() + " из " + mc.getConnection().currentServerMaxPlayers + ")", rpcTime));
         }
-    }
-
-    @SubscribeEvent
-    public void onRender(RenderGameOverlayEvent.Text event) {
-        if (ModStatics.factionText.length() > 0)
-            new FactionsGui(ModStatics.factionText, Minecraft.getMinecraft(), event);
     }
 }

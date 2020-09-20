@@ -28,6 +28,14 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
+task prepareAssets(type: Copy) {
+    group = 'build'
+    from project.file('src/main/resources')
+    into project.file('build/classes/java/main')
+}
+
+classes.dependsOn(prepareAssets)
+
 minecraft {
     version = "1.12.2-14.23.5.2815"
     runDir = "run"

@@ -12,12 +12,12 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 
 public class WindowedMessageGuiScreen extends GuiScreen {
-    private String[] message;
-    private int windowWidth = 256;
-    private int windowHeight = 120;
+    private final String message;
+    private final int windowWidth = 256;
+    private final int windowHeight = 120;
 
     public WindowedMessageGuiScreen(String message) {
-        this.message = MessagingUtils.splitByMaxChars(message, 41);
+        this.message = message;
     }
 
     @Override
@@ -62,9 +62,12 @@ public class WindowedMessageGuiScreen extends GuiScreen {
 
         this.fontRenderer.drawString(I18n.format("afmcm.text.message"), posX + 7, posY + 5, 4210752);
 
+        /*
         for (int i = 0; i < message.length; i++) {
             this.fontRenderer.drawString(message[i], posX + 4, posY + 17 + (i * this.fontRenderer.FONT_HEIGHT), 4210752);
         }
+         */
+        fontRenderer.drawSplitString(message, posX + 4, posY + 17, 240, 4210752);
 
         super.drawScreen(p_drawScreen_1_, p_drawScreen_2_, p_drawScreen_3_);
     }
