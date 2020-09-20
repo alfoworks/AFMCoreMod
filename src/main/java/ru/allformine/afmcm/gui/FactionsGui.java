@@ -13,7 +13,7 @@ public class FactionsGui extends Gui {
 
     private static long animTime;
 
-    private static String[] texts = {null, null};
+    public static String[] texts = {null, null};
 
     public static void addText(String text) {
         text = String.format("[%s%s]", text, ChatFormatting.RESET);
@@ -36,6 +36,10 @@ public class FactionsGui extends Gui {
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
+        if (texts[0] == null) {
+            return;
+        }
+
         ScaledResolution scaledResolution = event.getResolution();
         Minecraft mc = Minecraft.getMinecraft();
         int width = scaledResolution.getScaledWidth();
@@ -46,17 +50,17 @@ public class FactionsGui extends Gui {
         if (animTime != 0) {
             a = Math.min(255, (int) (System.currentTimeMillis() - animTime));
 
-            if (texts[1] != null) {
-                drawString(mc.fontRenderer, texts[1], width / 2 + 93, height - mc.fontRenderer.FONT_HEIGHT - 2, ModUtils.colorARGBtoInt(255 - a, 255, 255, 255));
-            }
-
             if (a == 255) {
                 animTime = 0;
+            }
+
+            if (texts[1] != null) {
+                drawString(mc.fontRenderer, texts[1], width / 2 + 93, height - mc.fontRenderer.FONT_HEIGHT - 2, ModUtils.colorARGBtoInt((255 - a) + 10, 255, 255, 255));
             }
         } else {
             a = 255;
         }
 
-        drawString(mc.fontRenderer, texts[0], width / 2 + 93, height - mc.fontRenderer.FONT_HEIGHT - 2, ModUtils.colorARGBtoInt(a, 255, 255, 255));
+        drawString(mc.fontRenderer, texts[0], width / 2 + 93, height - mc.fontRenderer.FONT_HEIGHT - 2, ModUtils.colorARGBtoInt(a + 10, 255, 255, 255));
     }
 }

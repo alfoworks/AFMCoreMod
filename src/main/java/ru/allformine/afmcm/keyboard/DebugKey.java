@@ -28,7 +28,17 @@ public class  DebugKey implements KeyBind {
 
             return;
         } else if (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-            FactionsGui.addText(ChatFormatting.values()[new Random().nextInt(ChatFormatting.values().length)] + "Test");
+            StringBuilder text = new StringBuilder();
+
+            for (int i = 0; i < new Random().nextInt(10); i++) {
+                text.append("Test");
+            }
+
+            FactionsGui.addText(ChatFormatting.values()[new Random().nextInt(ChatFormatting.values().length)] + text.toString());
+
+            return;
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_RMENU)) {
+            FactionsGui.texts = new String[]{null, null};
 
             return;
         }

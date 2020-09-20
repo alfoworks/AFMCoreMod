@@ -34,7 +34,7 @@ task prepareAssets(type: Copy) {
     into project.file('build/classes/java/main')
 }
 
-classes.dependsOn(prepareAssets)
+//classes.dependsOn(prepareAssets)
 
 minecraft {
     version = "1.12.2-14.23.5.2815"
